@@ -28,12 +28,11 @@
       --blue-deep: #3B82C4;
       --blue-light: rgba(91, 155, 213, 0.15);
       --sage: #7A9B57;
-      --sage-deep: #5A7B3C;
       --warm-gray: #87867f;
-      --clay: #B5651D;
       --sand: #D4C4A8;
       --cream: #F5F0E1;
       --border: #E2DDD4;
+      --grid: rgba(0,0,0,0.04);
       --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
       --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
@@ -43,11 +42,14 @@
     body {
       font-family: var(--serif);
       font-size: 18px; line-height: 1.7;
-      color: var(--text);
-      background-color: var(--bg);
+      color: var(--text); background-color: var(--bg);
       -webkit-font-smoothing: antialiased;
-      letter-spacing: -0.01em;
-      overflow-x: hidden;
+      letter-spacing: -0.01em; overflow-x: hidden;
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 28px 28px;
+      background-position: -1px -1px;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -56,12 +58,11 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
       }
-      .wc-blob, .wc-divider, .paint-stroke { opacity: 1 !important; transform: none !important; }
     }
 
     .svg-filters { position: absolute; width: 0; height: 0; overflow: hidden; }
 
-    /* ═══════════ NAVIGATION ═══════════ */
+    /* ═══════════ NAV ═══════════ */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       background: rgba(250, 249, 245, 0.92);
@@ -92,13 +93,13 @@
     .nav-links a:hover::after { width: 100%; }
 
     /* ═══════════ LAYOUT ═══════════ */
-    section { padding: 140px 32px; position: relative; overflow: hidden; }
+    section { padding: 120px 32px; position: relative; overflow: hidden; }
     .content { max-width: 680px; margin: 0 auto; position: relative; z-index: 2; }
 
     /* ═══════════ TYPOGRAPHY ═══════════ */
     h1 {
       font-family: var(--serif);
-      font-size: clamp(42px, 6vw, 68px);
+      font-size: clamp(42px, 6vw, 72px);
       font-weight: 300; line-height: 1.08;
       letter-spacing: -0.03em;
     }
@@ -109,8 +110,7 @@
       display: flex; align-items: center; gap: 12px;
     }
     h2::before {
-      content: ''; width: 24px; height: 1.5px;
-      background: var(--terracotta);
+      content: ''; width: 24px; height: 1.5px; background: var(--terracotta);
     }
     h3 {
       font-family: var(--serif);
@@ -138,61 +138,92 @@
     .hero {
       min-height: 100vh; display: flex; align-items: center;
       padding-top: 80px; position: relative; overflow: hidden;
-      background: linear-gradient(170deg, var(--bg) 0%, var(--cream) 40%, var(--bg) 100%);
     }
     .hero .content { max-width: 800px; position: relative; z-index: 3; }
 
-    .hero-graphic {
-      position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    }
-    .hero-graphic svg {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 160%; height: 160%;
-      opacity: 0;
-      animation: heroLinesIn 2s cubic-bezier(0.33, 1, 0.68, 1) 0.3s forwards;
+    /* Graph paper darker grid for hero */
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(139,126,200,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,126,200,0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      background-position: -1px -1px;
+      z-index: 0;
     }
 
-    /* Hero watercolor washes — MUCH more saturated */
-    .wc-hero {
+    /* Decorative math curves in hero background */
+    .hero-math {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    }
+    .hero-math svg {
+      position: absolute; width: 100%; height: 100%;
+    }
+    .hero-math .draw {
+      stroke-dasharray: 2000;
+      stroke-dashoffset: 2000;
+      animation: drawLine 3s cubic-bezier(0.33, 1, 0.68, 1) 0.4s forwards;
+    }
+    .hero-math .draw-d2 { animation-delay: 0.8s; }
+    .hero-math .draw-d3 { animation-delay: 1.2s; }
+    .hero-math .draw-d4 { animation-delay: 1.6s; }
+    .hero-math .draw-d5 { animation-delay: 2.0s; }
+
+    /* Watercolor wash behind hero name — paints in */
+    .hero-wash {
       position: absolute; pointer-events: none; z-index: 1;
       opacity: 0;
     }
-    .wc-hero-1 {
-      top: -5%; right: -8%; width: 800px; height: 700px;
-      animation: paintBlob 2.5s cubic-bezier(0.33, 1, 0.68, 1) 0.4s forwards;
+    .hero-wash-1 {
+      top: 10%; right: 5%; width: 500px; height: 400px;
+      animation: paintIn 2.5s cubic-bezier(0.33, 1, 0.68, 1) 0.6s forwards;
     }
-    .wc-hero-2 {
-      bottom: -10%; left: -15%; width: 700px; height: 600px;
-      animation: paintBlob 2.5s cubic-bezier(0.33, 1, 0.68, 1) 0.8s forwards;
+    .hero-wash-2 {
+      bottom: 10%; left: 5%; width: 400px; height: 350px;
+      animation: paintIn 2.5s cubic-bezier(0.33, 1, 0.68, 1) 1.2s forwards;
     }
-    .wc-hero-3 {
-      top: 15%; left: 10%; width: 500px; height: 450px;
-      animation: paintBlob 2.5s cubic-bezier(0.33, 1, 0.68, 1) 1.2s forwards;
+
+    /* Paint-in text effect */
+    .paint-text {
+      position: relative; display: inline;
     }
-    .wc-hero-4 {
-      bottom: 20%; right: 15%; width: 350px; height: 300px;
-      animation: paintBlob 2.5s cubic-bezier(0.33, 1, 0.68, 1) 1.5s forwards;
+    .paint-text .paint-fill {
+      position: absolute; inset: -8px -12px;
+      z-index: -1; pointer-events: none;
+      opacity: 0;
+      animation: paintIn 2s cubic-bezier(0.33, 1, 0.68, 1) 0.5s forwards;
+    }
+    .paint-text .accent {
+      color: var(--terracotta);
+      position: relative;
+    }
+    .paint-text .accent::after {
+      content: '';
+      position: absolute; left: -4px; right: -4px; bottom: 2px; top: 60%;
+      background: rgba(196, 90, 60, 0.12);
+      z-index: -1;
+      transform: scaleX(0); transform-origin: left;
+      animation: brushStroke 1.2s cubic-bezier(0.33, 1, 0.68, 1) 1.2s forwards;
     }
 
     .hero-label {
       font-family: var(--sans); font-size: 13px; font-weight: 600;
       color: var(--terracotta); margin-bottom: 28px;
       letter-spacing: 0.1em; text-transform: uppercase;
-      opacity: 0; animation: slideUp 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.5s forwards;
+      opacity: 0; animation: slideUp 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.3s forwards;
     }
     .hero h1 {
       margin-bottom: 36px;
-      opacity: 0; animation: slideUp 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.65s forwards;
+      opacity: 0; animation: slideUp 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.45s forwards;
     }
-    .hero h1 .accent { color: var(--terracotta); }
     .hero-intro {
       font-size: 20px; line-height: 1.75; color: var(--text-secondary); max-width: 580px;
-      opacity: 0; animation: slideUp 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.8s forwards;
+      opacity: 0; animation: slideUp 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.7s forwards;
     }
+    .hero-intro em { font-style: italic; color: var(--purple-deep); }
     .scroll-cue {
       margin-top: 72px; display: flex; align-items: center; gap: 14px;
-      opacity: 0; animation: slideUp 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.95s forwards;
+      opacity: 0; animation: slideUp 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.85s forwards;
     }
     .scroll-cue span {
       font-family: var(--sans); font-size: 11px; font-weight: 500;
@@ -208,49 +239,30 @@
       animation: pulse 2s ease-in-out 2s infinite;
     }
 
-    /* ═══════════ WATERCOLOR BLOB SYSTEM ═══════════ */
-    .wc-blob {
-      position: absolute; pointer-events: none; z-index: 0;
-      opacity: 0; transform: scale(0.4) rotate(-8deg);
-      transition: opacity 1.8s cubic-bezier(0.33, 1, 0.68, 1),
-                  transform 2s cubic-bezier(0.33, 1, 0.68, 1);
+    /* ═══════════ GEOMETRIC SCROLL ART ═══════════ */
+    .geo-art {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
     }
-    .wc-blob.painted {
-      opacity: 1; transform: scale(1) rotate(0deg);
-    }
-
-    /* Watercolor divider between sections */
-    .wc-divider {
-      position: relative; height: 180px; overflow: hidden;
-      pointer-events: none; z-index: 1;
-    }
-    .wc-divider svg {
-      position: absolute; width: 100%; height: 100%;
-    }
-    .wc-divider .stroke-path {
-      stroke-dasharray: 2000;
-      stroke-dashoffset: 2000;
+    .geo-art svg { position: absolute; width: 100%; height: 100%; }
+    .geo-art .geo-path {
+      stroke-dasharray: 3000;
+      stroke-dashoffset: 3000;
       transition: stroke-dashoffset 2.5s cubic-bezier(0.33, 1, 0.68, 1);
     }
-    .wc-divider.painted .stroke-path {
-      stroke-dashoffset: 0;
-    }
+    .geo-art.drawn .geo-path { stroke-dashoffset: 0; }
 
-    /* Paint-in section backgrounds */
-    .paint-bg {
-      position: absolute; inset: 0; z-index: 0;
-      opacity: 0; transform: scale(0.92);
-      transition: opacity 1.5s cubic-bezier(0.33, 1, 0.68, 1) 0.1s,
-                  transform 2s cubic-bezier(0.33, 1, 0.68, 1) 0.1s;
+    /* Watercolor accents — non-circular shapes */
+    .wc-accent {
+      position: absolute; pointer-events: none; z-index: 0;
+      opacity: 0; transform: scale(0.5);
+      transition: opacity 1.5s cubic-bezier(0.33, 1, 0.68, 1),
+                  transform 2s cubic-bezier(0.33, 1, 0.68, 1);
     }
-    .paint-bg.painted {
-      opacity: 1; transform: scale(1);
-    }
+    .wc-accent.painted { opacity: 1; transform: scale(1); }
 
     /* ═══════════ REVEAL SYSTEM ═══════════ */
     .reveal {
-      opacity: 0; transform: translateY(48px);
-      transition: none;
+      opacity: 0; transform: translateY(48px); transition: none;
     }
     .reveal.vis {
       animation: revealUp 1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
@@ -272,9 +284,7 @@
     .reveal.vis .r-child:nth-child(9) { animation-delay: 0.72s; }
     .reveal.vis .r-child:nth-child(10) { animation-delay: 0.80s; }
 
-    .stg {
-      opacity: 0; transform: translateY(28px);
-    }
+    .stg { opacity: 0; transform: translateY(28px); }
     .reveal.vis .stg {
       animation: revealUp 0.75s cubic-bezier(0.33, 1, 0.68, 1) forwards;
     }
@@ -292,14 +302,17 @@
       from { opacity: 0; transform: translateY(48px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    @keyframes heroLinesIn {
-      from { opacity: 0; }
-      to { opacity: 0.35; }
+    @keyframes drawLine {
+      to { stroke-dashoffset: 0; }
     }
-    @keyframes paintBlob {
-      0% { opacity: 0; transform: scale(0.3) rotate(-12deg); filter: blur(8px); }
-      60% { opacity: 0.9; transform: scale(1.05) rotate(1deg); filter: blur(0); }
+    @keyframes paintIn {
+      0% { opacity: 0; transform: scale(0.3) rotate(-5deg); filter: blur(8px); }
+      60% { opacity: 0.85; filter: blur(0); }
       100% { opacity: 1; transform: scale(1) rotate(0deg); filter: blur(0); }
+    }
+    @keyframes brushStroke {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
     }
     @keyframes lineGrow {
       from { transform: scaleX(0); }
@@ -308,14 +321,6 @@
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.4; transform: scale(0.7); }
-    }
-    @keyframes drawStroke {
-      from { stroke-dashoffset: 2000; }
-      to { stroke-dashoffset: 0; }
-    }
-    @keyframes floatSlow {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-15px) rotate(1.5deg); }
     }
 
     /* ═══════════ PULL QUOTE ═══════════ */
@@ -329,7 +334,7 @@
     .pull-quote::before {
       content: ''; position: absolute; left: 0; top: 0;
       width: 4px; height: 100%;
-      background: linear-gradient(180deg, var(--terracotta), var(--purple), var(--blue));
+      background: linear-gradient(180deg, var(--purple), var(--blue), var(--terracotta));
       border-radius: 2px;
     }
     .pull-quote::after {
@@ -345,21 +350,14 @@
       width: 2px;
       background: linear-gradient(180deg, var(--purple), var(--blue), var(--terracotta-light));
     }
-    .timeline-item {
-      padding: 28px 0 36px; position: relative;
-    }
-    .timeline-item + .timeline-item {
-      border-top: 1px solid rgba(226, 221, 212, 0.5);
-    }
+    .timeline-item { padding: 28px 0 36px; position: relative; }
+    .timeline-item + .timeline-item { border-top: 1px solid rgba(226, 221, 212, 0.5); }
     .timeline-item::before {
       content: ''; position: absolute; left: -28px; top: 36px;
       width: 11px; height: 11px; border-radius: 50%;
-      background: var(--bg); border: 2.5px solid var(--purple);
-      z-index: 1;
+      background: var(--bg); border: 2.5px solid var(--purple); z-index: 1;
     }
-    .timeline-item:first-child::before {
-      background: var(--purple); border-color: var(--purple);
-    }
+    .timeline-item:first-child::before { background: var(--purple); border-color: var(--purple); }
     .timeline-meta {
       font-family: var(--sans); font-size: 12px; font-weight: 600;
       color: var(--terracotta); margin-bottom: 6px;
@@ -373,14 +371,12 @@
       font-family: var(--sans); font-size: 14px; font-weight: 500;
       color: var(--text-secondary); margin-bottom: 14px;
     }
-    .timeline-desc {
-      font-size: 16px; line-height: 1.7; color: var(--text-secondary);
-    }
+    .timeline-desc { font-size: 16px; line-height: 1.7; color: var(--text-secondary); }
 
     /* ═══════════ PROJECTS ═══════════ */
     .projects-grid { margin-top: 48px; display: grid; grid-template-columns: 1fr; gap: 28px; }
     .project-card {
-      padding: 40px; background: var(--bg);
+      padding: 40px; background: rgba(250, 249, 245, 0.9);
       border: 1px solid var(--border); border-radius: 4px;
       transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1);
       position: relative; overflow: hidden;
@@ -413,7 +409,6 @@
     .project-tag.tag-purple { color: #fff; background: var(--purple); }
     .project-tag.tag-blue { color: #fff; background: var(--blue-deep); }
     .project-tag.tag-terra { color: #fff; background: var(--terracotta); }
-    .project-tag.tag-amber { color: #fff; background: var(--amber); }
     .project-title {
       font-family: var(--serif); font-size: 24px; font-weight: 400;
       margin-bottom: 14px; line-height: 1.3;
@@ -426,9 +421,7 @@
       display: inline-flex; align-items: center; gap: 8px;
       color: var(--purple-deep); text-decoration: none;
     }
-    .project-link .arrow {
-      transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
-    }
+    .project-link .arrow { transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1); }
     .project-card:hover .project-link .arrow { transform: translateX(6px); }
 
     /* ═══════════ INTERESTS ═══════════ */
@@ -437,6 +430,7 @@
       font-family: var(--sans); font-size: 14px; font-weight: 500;
       padding: 10px 22px; border: 1.5px solid var(--border);
       border-radius: 100px; color: var(--text-secondary);
+      background: rgba(250,249,245,0.8);
       transition: all 0.35s cubic-bezier(0.33, 1, 0.68, 1);
       cursor: default; position: relative; overflow: hidden;
     }
@@ -444,8 +438,7 @@
     .interest-tag:nth-child(even) { --tag-color: var(--blue-deep); --tag-bg: var(--blue-light); }
     .interest-tag::before {
       content: ''; position: absolute; inset: 0;
-      background: var(--tag-bg); opacity: 0;
-      transition: opacity 0.35s;
+      background: var(--tag-bg); opacity: 0; transition: opacity 0.35s;
     }
     .interest-tag:hover {
       border-color: var(--tag-color); color: var(--tag-color);
@@ -477,31 +470,24 @@
       font-size: 22px; color: var(--text-tertiary);
       transition: all 0.35s cubic-bezier(0.33, 1, 0.68, 1);
     }
-    .social-link:hover .social-link-arrow {
-      transform: translateX(8px); color: var(--purple-deep);
-    }
+    .social-link:hover .social-link-arrow { transform: translateX(8px); color: var(--purple-deep); }
 
     /* ═══════════ FOOTER ═══════════ */
     footer {
       padding: 48px 32px; border-top: 1px solid var(--border);
-      background: var(--bg-alt);
+      background: rgba(243,241,235,0.9);
     }
-    footer .content {
-      display: flex; justify-content: space-between; align-items: center;
-    }
+    footer .content { display: flex; justify-content: space-between; align-items: center; }
     footer p { font-family: var(--sans); font-size: 13px; color: var(--text-tertiary); }
 
     /* ═══════════ RESPONSIVE ═══════════ */
     @media (max-width: 768px) {
-      section { padding: 96px 24px; }
+      section { padding: 80px 24px; }
       .nav-inner { padding: 14px 24px; }
       .nav-links { gap: 18px; }
       .nav-links a { font-size: 13px; }
-      .hero { min-height: auto; padding-top: 120px; padding-bottom: 96px; }
-      .hero-graphic svg { width: 250%; }
-      .wc-hero { transform: scale(0.6); }
-      .wc-blob { transform: scale(0.5) !important; }
-      .wc-divider { height: 100px; }
+      .hero { min-height: auto; padding-top: 120px; padding-bottom: 80px; }
+      .geo-art, .wc-accent, .hero-wash { display: none; }
       .timeline { padding-left: 24px; }
       .timeline-item::before { left: -24px; }
       footer .content { flex-direction: column; gap: 8px; text-align: center; }
@@ -516,18 +502,12 @@
 </head>
 <body>
 
-  <!-- SVG Filters -->
   <svg class="svg-filters" aria-hidden="true">
     <defs>
       <filter id="wc" x="-30%" y="-30%" width="160%" height="160%">
         <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="5" seed="2" result="n"/>
         <feDisplacementMap in="SourceGraphic" in2="n" scale="35" xChannelSelector="R" yChannelSelector="G" result="d"/>
         <feGaussianBlur in="d" stdDeviation="5"/>
-      </filter>
-      <filter id="wc-lg" x="-40%" y="-40%" width="180%" height="180%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="6" seed="7" result="n"/>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="45" xChannelSelector="R" yChannelSelector="G" result="d"/>
-        <feGaussianBlur in="d" stdDeviation="8"/>
       </filter>
       <filter id="wc-sm" x="-20%" y="-20%" width="140%" height="140%">
         <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="4" seed="5" result="n"/>
@@ -537,11 +517,6 @@
       <filter id="pencil" x="-5%" y="-40%" width="110%" height="180%">
         <feTurbulence type="fractalNoise" baseFrequency="0.6 0.015" numOctaves="3" seed="1" result="n"/>
         <feDisplacementMap in="SourceGraphic" in2="n" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
-      </filter>
-      <filter id="wc-edge" x="-25%" y="-25%" width="150%" height="150%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" seed="3" result="n"/>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="25" xChannelSelector="R" yChannelSelector="G" result="d"/>
-        <feGaussianBlur in="d" stdDeviation="2"/>
       </filter>
     </defs>
   </svg>
@@ -561,62 +536,48 @@
 
   <!-- ═══════════════ HERO ═══════════════ -->
   <section class="hero" id="top">
-    <div class="hero-graphic">
-      <svg viewBox="0 0 1600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <g filter="url(#pencil)">
-          <path d="M0,50 Q400,45 800,40 T1600,20" stroke="#8B7EC8" stroke-width="1.4" fill="none" opacity="0.3"/>
-          <path d="M0,80 Q400,78 800,75 T1600,60" stroke="#5B9BD5" stroke-width="1.2" fill="none" opacity="0.3"/>
-          <path d="M0,110 Q400,112 800,120 T1600,110" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
-          <path d="M0,140 Q400,142 800,155 T1600,180" stroke="#C45A3C" stroke-width="1.3" fill="none" opacity="0.25"/>
-          <path d="M0,170 Q400,168 800,175 T1600,200" stroke="#8B7EC8" stroke-width="1.1" fill="none" opacity="0.2"/>
-          <path d="M0,200 Q400,205 800,220 T1600,280" stroke="#D97706" stroke-width="1.2" fill="none" opacity="0.2"/>
-          <path d="M0,230 Q400,228 800,235 T1600,240" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.25"/>
-          <path d="M0,260 Q400,265 800,285 T1600,350" stroke="#5B9BD5" stroke-width="1.3" fill="none" opacity="0.2"/>
-          <path d="M0,290 Q400,288 800,295 T1600,300" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
-          <path d="M0,320 Q400,325 800,345 T1600,410" stroke="#8B7EC8" stroke-width="1.2" fill="none" opacity="0.18"/>
-          <path d="M0,350 Q400,348 800,355 T1600,360" stroke="#D4C4A8" stroke-width="1.0" fill="none" opacity="0.3"/>
-          <path d="M0,380 Q400,385 800,400 T1600,470" stroke="#C45A3C" stroke-width="1.3" fill="none" opacity="0.2"/>
-          <path d="M0,410 Q400,408 800,415 T1600,420" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
-          <path d="M0,440 Q400,445 800,460 T1600,540" stroke="#7A9B57" stroke-width="1.2" fill="none" opacity="0.15"/>
-          <path d="M0,470 Q400,468 800,475 T1600,480" stroke="#5B9BD5" stroke-width="1.0" fill="none" opacity="0.25"/>
-          <path d="M0,500 Q400,505 800,520 T1600,600" stroke="#8B7EC8" stroke-width="1.2" fill="none" opacity="0.18"/>
-          <path d="M0,530 Q400,528 800,535 T1600,540" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
-          <path d="M0,560 Q400,565 800,580 T1600,660" stroke="#D97706" stroke-width="1.1" fill="none" opacity="0.15"/>
-          <path d="M0,590 Q400,588 800,595 T1600,600" stroke="#D4C4A8" stroke-width="1.0" fill="none" opacity="0.25"/>
-          <path d="M0,620 Q400,625 800,640 T1600,720" stroke="#C45A3C" stroke-width="1.2" fill="none" opacity="0.18"/>
-          <path d="M0,650 Q400,648 800,655 T1600,660" stroke="#8B7EC8" stroke-width="1.0" fill="none" opacity="0.22"/>
-          <path d="M0,680 Q400,685 800,700 T1600,770" stroke="#5B9BD5" stroke-width="1.1" fill="none" opacity="0.18"/>
-          <path d="M0,710 Q400,708 800,715 T1600,720" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
-          <path d="M0,740 Q400,745 800,760 T1600,790" stroke="#7A9B57" stroke-width="1.2" fill="none" opacity="0.15"/>
-        </g>
+
+    <!-- Mathematical curves drawn on graph paper -->
+    <div class="hero-math">
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- Sine wave -->
+        <path class="draw" d="M-50,450 C50,300 150,300 250,450 S450,600 550,450 S750,300 850,450 S1050,600 1150,450 S1350,300 1450,450 S1650,600 1750,450" stroke="var(--purple)" stroke-width="1.8" fill="none" opacity="0.3" filter="url(#pencil)"/>
+        <!-- Exponential curve -->
+        <path class="draw draw-d2" d="M100,800 Q300,790 500,750 T900,500 T1200,200 T1500,50" stroke="var(--blue)" stroke-width="1.5" fill="none" opacity="0.25" filter="url(#pencil)"/>
+        <!-- Parabola -->
+        <path class="draw draw-d3" d="M200,100 Q800,900 1400,100" stroke="var(--terracotta)" stroke-width="1.6" fill="none" opacity="0.2" filter="url(#pencil)"/>
+        <!-- Golden spiral approximation -->
+        <path class="draw draw-d4" d="M800,450 C800,380 860,320 930,320 S1060,380 1060,450 S1000,580 930,580 S800,520 800,450 Q800,350 900,300 T1100,350 T1100,550 T850,600 T750,400" stroke="var(--amber)" stroke-width="1.4" fill="none" opacity="0.2" filter="url(#pencil)"/>
+        <!-- Tangent line -->
+        <path class="draw draw-d5" d="M0,700 L1600,200" stroke="var(--warm-gray)" stroke-width="0.8" fill="none" opacity="0.15"/>
+        <!-- Axes -->
+        <line class="draw" x1="100" y1="0" x2="100" y2="900" stroke="var(--warm-gray)" stroke-width="0.6" opacity="0.12"/>
+        <line class="draw draw-d2" x1="0" y1="450" x2="1600" y2="450" stroke="var(--warm-gray)" stroke-width="0.6" opacity="0.12"/>
       </svg>
     </div>
 
-    <!-- Hero watercolor washes — vivid purples, blues, terracotta, amber -->
-    <svg class="wc-hero wc-hero-1" viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="400" cy="350" rx="340" ry="280" fill="rgba(139, 126, 200, 0.16)" filter="url(#wc-lg)"/>
-      <ellipse cx="450" cy="300" rx="220" ry="180" fill="rgba(91, 155, 213, 0.12)" filter="url(#wc)"/>
-      <ellipse cx="350" cy="400" rx="160" ry="120" fill="rgba(196, 90, 60, 0.08)" filter="url(#wc)"/>
+    <!-- Watercolor washes — angular, not circular -->
+    <svg class="hero-wash hero-wash-1" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="50,80 350,20 480,150 420,350 200,380 30,250" fill="rgba(139, 126, 200, 0.12)" filter="url(#wc)"/>
+      <polygon points="100,120 300,60 400,200 320,340 150,300" fill="rgba(91, 155, 213, 0.08)" filter="url(#wc-sm)"/>
     </svg>
-    <svg class="wc-hero wc-hero-2" viewBox="0 0 700 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="350" cy="300" rx="280" ry="230" fill="rgba(196, 90, 60, 0.14)" filter="url(#wc-lg)"/>
-      <ellipse cx="300" cy="350" rx="200" ry="160" fill="rgba(217, 119, 6, 0.1)" filter="url(#wc)"/>
-      <ellipse cx="400" cy="250" rx="150" ry="110" fill="rgba(139, 126, 200, 0.07)" filter="url(#wc)"/>
-    </svg>
-    <svg class="wc-hero wc-hero-3" viewBox="0 0 500 450" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="250" cy="225" rx="200" ry="160" fill="rgba(91, 155, 213, 0.12)" filter="url(#wc)"/>
-      <ellipse cx="200" cy="260" rx="140" ry="100" fill="rgba(122, 155, 87, 0.08)" filter="url(#wc)"/>
-    </svg>
-    <svg class="wc-hero wc-hero-4" viewBox="0 0 350 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="175" cy="150" rx="140" ry="110" fill="rgba(217, 119, 6, 0.13)" filter="url(#wc)"/>
+    <svg class="hero-wash hero-wash-2" viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="30,100 200,20 380,120 350,280 180,340 20,250" fill="rgba(196, 90, 60, 0.1)" filter="url(#wc)"/>
+      <polygon points="80,150 220,80 330,180 280,300 120,280" fill="rgba(217, 119, 6, 0.07)" filter="url(#wc-sm)"/>
     </svg>
 
     <div class="content">
       <div class="hero-label">Personal</div>
-      <h1>Hi, I'm <span class="accent">JP Zambrano</span>.</h1>
+      <h1 class="paint-text">
+        Hi, I'm <span class="accent">JP Zambrano</span>.
+        <svg class="paint-fill" viewBox="0 0 600 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="5,15 590,5 598,40 585,90 10,95 2,60" fill="rgba(139, 126, 200, 0.06)" filter="url(#wc)"/>
+        </svg>
+      </h1>
       <p class="hero-intro">
-        I'm interested in the intersection of technology, research, and building things that matter.
-        This is a brief look at my background, what I've worked on, and what I'm thinking about.
+        I study <em>mathematics</em> and <em>economics</em> — drawn to the elegance of
+        proofs, the patterns in data, and building things at the intersection of
+        theory and technology.
       </p>
       <div class="scroll-cue">
         <span>Scroll to explore</span>
@@ -626,26 +587,26 @@
     </div>
   </section>
 
-  <!-- ═══════ DIVIDER: Hero → About ═══════ -->
-  <div class="wc-divider" data-paint>
-    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="300" cy="90" rx="350" ry="70" fill="rgba(139, 126, 200, 0.12)" filter="url(#wc-edge)"/>
-      <ellipse cx="900" cy="100" rx="400" ry="60" fill="rgba(91, 155, 213, 0.1)" filter="url(#wc-edge)"/>
-      <ellipse cx="1400" cy="80" rx="280" ry="55" fill="rgba(196, 90, 60, 0.09)" filter="url(#wc-edge)"/>
-      <path class="stroke-path" d="M0,90 C200,60 400,120 600,85 S1000,110 1200,75 S1500,95 1600,80" stroke="#8B7EC8" stroke-width="1.5" fill="none" filter="url(#pencil)" opacity="0.4"/>
-      <path class="stroke-path" d="M0,110 C300,95 500,130 800,100 S1100,125 1400,95 1600,105" stroke="#5B9BD5" stroke-width="1.2" fill="none" filter="url(#pencil)" opacity="0.3"/>
-    </svg>
-  </div>
-
   <!-- ═══════════════ ABOUT ═══════════════ -->
   <section id="about" style="position:relative;">
-    <!-- Paint-in background -->
-    <svg class="paint-bg" data-paint viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect width="1600" height="900" fill="rgba(139, 126, 200, 0.04)"/>
-      <ellipse cx="1200" cy="200" rx="400" ry="300" fill="rgba(139, 126, 200, 0.1)" filter="url(#wc-lg)"/>
-      <ellipse cx="1300" cy="250" rx="250" ry="180" fill="rgba(91, 155, 213, 0.08)" filter="url(#wc)"/>
-      <ellipse cx="200" cy="600" rx="350" ry="250" fill="rgba(196, 90, 60, 0.07)" filter="url(#wc-lg)"/>
-      <ellipse cx="300" cy="650" rx="200" ry="150" fill="rgba(217, 119, 6, 0.06)" filter="url(#wc)"/>
+    <!-- Geometric art: coordinate axes + function -->
+    <div class="geo-art" data-draw>
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- Axes on right side -->
+        <line class="geo-path" x1="1100" y1="100" x2="1100" y2="800" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.15"/>
+        <line class="geo-path" x1="900" y1="450" x2="1550" y2="450" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.15"/>
+        <!-- Log curve -->
+        <path class="geo-path" d="M1110,750 Q1150,600 1200,500 T1350,350 T1500,280" stroke="var(--purple)" stroke-width="1.5" fill="none" opacity="0.25" filter="url(#pencil)"/>
+        <!-- Tick marks -->
+        <line class="geo-path" x1="1095" y1="350" x2="1105" y2="350" stroke="var(--warm-gray)" stroke-width="1" opacity="0.2"/>
+        <line class="geo-path" x1="1095" y1="550" x2="1105" y2="550" stroke="var(--warm-gray)" stroke-width="1" opacity="0.2"/>
+        <line class="geo-path" x1="1250" y1="445" x2="1250" y2="455" stroke="var(--warm-gray)" stroke-width="1" opacity="0.2"/>
+        <line class="geo-path" x1="1400" y1="445" x2="1400" y2="455" stroke="var(--warm-gray)" stroke-width="1" opacity="0.2"/>
+      </svg>
+    </div>
+    <!-- Angular watercolor accent -->
+    <svg class="wc-accent" data-paint style="top:40px;right:-30px;width:400px;height:350px;" viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="80,30 350,60 380,200 300,330 50,280 20,120" fill="rgba(139, 126, 200, 0.08)" filter="url(#wc)"/>
     </svg>
     <div class="content reveal">
       <h2 class="r-child">Background</h2>
@@ -664,23 +625,20 @@
     </div>
   </section>
 
-  <!-- ═══════ DIVIDER: About → Education ═══════ -->
-  <div class="wc-divider" data-paint>
-    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="500" cy="90" rx="380" ry="65" fill="rgba(122, 155, 87, 0.12)" filter="url(#wc-edge)"/>
-      <ellipse cx="1100" cy="95" rx="320" ry="55" fill="rgba(139, 126, 200, 0.1)" filter="url(#wc-edge)"/>
-      <path class="stroke-path" d="M0,85 C250,70 500,115 750,80 S1100,105 1350,75 1600,90" stroke="#7A9B57" stroke-width="1.5" fill="none" filter="url(#pencil)" opacity="0.35"/>
-      <path class="stroke-path" d="M0,105 C350,90 600,125 900,95 S1200,115 1600,100" stroke="#C45A3C" stroke-width="1.2" fill="none" filter="url(#pencil)" opacity="0.25"/>
-    </svg>
-  </div>
-
   <!-- ═══════════════ EDUCATION ═══════════════ -->
   <section id="education" style="position:relative;">
-    <svg class="paint-bg" data-paint viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect width="1600" height="900" fill="rgba(122, 155, 87, 0.03)"/>
-      <ellipse cx="200" cy="250" rx="380" ry="280" fill="rgba(122, 155, 87, 0.1)" filter="url(#wc-lg)"/>
-      <ellipse cx="280" cy="300" rx="220" ry="160" fill="rgba(91, 155, 213, 0.07)" filter="url(#wc)"/>
-      <ellipse cx="1300" cy="500" rx="300" ry="220" fill="rgba(217, 119, 6, 0.06)" filter="url(#wc-lg)"/>
+    <div class="geo-art" data-draw>
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- Fibonacci spiral -->
+        <path class="geo-path" d="M200,500 A50,50 0 0,1 250,450 A100,100 0 0,1 350,550 A150,150 0 0,1 200,400 A250,250 0 0,1 450,650 A400,400 0 0,1 50,250" stroke="var(--amber)" stroke-width="1.5" fill="none" opacity="0.2" filter="url(#pencil)"/>
+        <!-- Triangle construction -->
+        <path class="geo-path" d="M1200,200 L1450,700 L950,700 Z" stroke="var(--blue)" stroke-width="1" fill="none" opacity="0.12"/>
+        <!-- Inscribed circle hint -->
+        <circle class="geo-path" cx="1200" cy="530" r="150" stroke="var(--purple)" stroke-width="0.8" fill="none" opacity="0.1"/>
+      </svg>
+    </div>
+    <svg class="wc-accent" data-paint style="bottom:20px;left:-50px;width:350px;height:300px;" viewBox="0 0 350 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="20,80 180,15 340,100 300,260 100,290 10,180" fill="rgba(122, 155, 87, 0.09)" filter="url(#wc)"/>
     </svg>
     <div class="content reveal">
       <h2 class="r-child">Education</h2>
@@ -702,29 +660,27 @@
     </div>
   </section>
 
-  <!-- ═══════ DIVIDER ═══════ -->
-  <div class="wc-divider" data-paint>
-    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="400" cy="85" rx="350" ry="60" fill="rgba(196, 90, 60, 0.12)" filter="url(#wc-edge)"/>
-      <ellipse cx="1000" cy="100" rx="400" ry="70" fill="rgba(217, 119, 6, 0.1)" filter="url(#wc-edge)"/>
-      <ellipse cx="1400" cy="75" rx="250" ry="50" fill="rgba(139, 126, 200, 0.08)" filter="url(#wc-edge)"/>
-      <path class="stroke-path" d="M0,95 C200,75 500,120 800,85 S1200,110 1600,90" stroke="#C45A3C" stroke-width="1.5" fill="none" filter="url(#pencil)" opacity="0.35"/>
-    </svg>
-  </div>
-
   <!-- ═══════════════ EXPERIENCE ═══════════════ -->
   <section id="experience" style="position:relative;">
-    <svg class="paint-bg" data-paint viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect width="1600" height="1000" fill="rgba(196, 90, 60, 0.03)"/>
-      <ellipse cx="1300" cy="200" rx="400" ry="300" fill="rgba(196, 90, 60, 0.1)" filter="url(#wc-lg)"/>
-      <ellipse cx="1350" cy="250" rx="250" ry="180" fill="rgba(217, 119, 6, 0.08)" filter="url(#wc)"/>
-      <ellipse cx="100" cy="700" rx="350" ry="250" fill="rgba(139, 126, 200, 0.08)" filter="url(#wc-lg)"/>
-      <ellipse cx="200" cy="750" rx="200" ry="140" fill="rgba(91, 155, 213, 0.06)" filter="url(#wc)"/>
-    </svg>
-    <!-- Floating watercolor splotch -->
-    <svg class="wc-blob" data-paint style="top:60px;right:-60px;width:500px;height:400px;animation:floatSlow 8s ease-in-out infinite;" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="250" cy="200" rx="200" ry="150" fill="rgba(196, 90, 60, 0.15)" filter="url(#wc)"/>
-      <ellipse cx="280" cy="180" rx="120" ry="90" fill="rgba(217, 119, 6, 0.12)" filter="url(#wc-sm)"/>
+    <div class="geo-art" data-draw>
+      <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- Supply/demand curves -->
+        <line class="geo-path" x1="1150" y1="100" x2="1150" y2="850" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.15"/>
+        <line class="geo-path" x1="1000" y1="700" x2="1550" y2="700" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.15"/>
+        <!-- Demand curve (downward) -->
+        <path class="geo-path" d="M1170,180 Q1250,400 1500,650" stroke="var(--terracotta)" stroke-width="1.5" fill="none" opacity="0.25" filter="url(#pencil)"/>
+        <!-- Supply curve (upward) -->
+        <path class="geo-path" d="M1170,680 Q1300,500 1500,200" stroke="var(--blue)" stroke-width="1.5" fill="none" opacity="0.25" filter="url(#pencil)"/>
+        <!-- Equilibrium dot -->
+        <circle class="geo-path" cx="1335" cy="430" r="5" fill="var(--amber)" opacity="0.4"/>
+        <!-- Dotted lines to axes -->
+        <line class="geo-path" x1="1335" y1="430" x2="1335" y2="700" stroke="var(--warm-gray)" stroke-width="0.6" stroke-dasharray="4,4" opacity="0.15"/>
+        <line class="geo-path" x1="1335" y1="430" x2="1150" y2="430" stroke="var(--warm-gray)" stroke-width="0.6" stroke-dasharray="4,4" opacity="0.15"/>
+      </svg>
+    </div>
+    <svg class="wc-accent" data-paint style="top:80px;right:-20px;width:380px;height:320px;" viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="50,40 300,20 370,160 320,290 100,310 15,180" fill="rgba(196, 90, 60, 0.09)" filter="url(#wc)"/>
+      <polygon points="120,80 280,70 330,180 260,270 90,240" fill="rgba(217, 119, 6, 0.06)" filter="url(#wc-sm)"/>
     </svg>
     <div class="content reveal">
       <h2 class="r-child">Experience</h2>
@@ -752,27 +708,23 @@
     </div>
   </section>
 
-  <!-- ═══════ DIVIDER ═══════ -->
-  <div class="wc-divider" data-paint>
-    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="300" cy="95" rx="380" ry="65" fill="rgba(91, 155, 213, 0.12)" filter="url(#wc-edge)"/>
-      <ellipse cx="900" cy="80" rx="350" ry="55" fill="rgba(139, 126, 200, 0.1)" filter="url(#wc-edge)"/>
-      <path class="stroke-path" d="M0,90 C300,70 600,115 900,80 S1300,105 1600,85" stroke="#5B9BD5" stroke-width="1.5" fill="none" filter="url(#pencil)" opacity="0.35"/>
-      <path class="stroke-path" d="M0,115 C250,100 550,130 850,95 S1150,120 1600,105" stroke="#8B7EC8" stroke-width="1.2" fill="none" filter="url(#pencil)" opacity="0.25"/>
-    </svg>
-  </div>
-
   <!-- ═══════════════ RESEARCH ═══════════════ -->
   <section id="research" style="position:relative;">
-    <svg class="paint-bg" data-paint viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect width="1600" height="900" fill="rgba(91, 155, 213, 0.03)"/>
-      <ellipse cx="150" cy="300" rx="380" ry="280" fill="rgba(91, 155, 213, 0.1)" filter="url(#wc-lg)"/>
-      <ellipse cx="230" cy="350" rx="220" ry="160" fill="rgba(139, 126, 200, 0.08)" filter="url(#wc)"/>
-      <ellipse cx="1400" cy="600" rx="300" ry="220" fill="rgba(122, 155, 87, 0.07)" filter="url(#wc-lg)"/>
-    </svg>
-    <svg class="wc-blob" data-paint style="bottom:40px;left:-80px;width:450px;height:350px;animation:floatSlow 10s ease-in-out 2s infinite;" viewBox="0 0 450 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="225" cy="175" rx="180" ry="130" fill="rgba(91, 155, 213, 0.14)" filter="url(#wc)"/>
-      <ellipse cx="200" cy="200" rx="120" ry="80" fill="rgba(139, 126, 200, 0.1)" filter="url(#wc-sm)"/>
+    <div class="geo-art" data-draw>
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- Normal distribution -->
+        <path class="geo-path" d="M100,700 Q200,695 300,680 T500,550 T650,300 T800,150 T950,300 T1100,550 T1300,680 T1500,700" stroke="var(--purple)" stroke-width="1.8" fill="none" opacity="0.2" filter="url(#pencil)"/>
+        <!-- Mean line -->
+        <line class="geo-path" x1="800" y1="100" x2="800" y2="750" stroke="var(--warm-gray)" stroke-width="0.6" stroke-dasharray="6,4" opacity="0.12"/>
+        <!-- Sigma markers -->
+        <line class="geo-path" x1="550" y1="700" x2="550" y2="710" stroke="var(--warm-gray)" stroke-width="1" opacity="0.15"/>
+        <line class="geo-path" x1="1050" y1="700" x2="1050" y2="710" stroke="var(--warm-gray)" stroke-width="1" opacity="0.15"/>
+        <!-- Shaded area hint -->
+        <path class="geo-path" d="M550,700 Q600,680 650,580 T750,350 T800,150 T850,350 T950,580 T1050,700 Z" stroke="none" fill="rgba(139, 126, 200, 0.04)" filter="url(#wc-sm)"/>
+      </svg>
+    </div>
+    <svg class="wc-accent" data-paint style="bottom:60px;left:-40px;width:320px;height:280px;" viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="40,50 250,20 310,140 260,260 80,270 10,160" fill="rgba(91, 155, 213, 0.1)" filter="url(#wc)"/>
     </svg>
     <div class="content reveal">
       <h2 class="r-child">Research</h2>
@@ -795,27 +747,24 @@
     </div>
   </section>
 
-  <!-- ═══════ DIVIDER ═══════ -->
-  <div class="wc-divider" data-paint>
-    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="600" cy="85" rx="400" ry="65" fill="rgba(217, 119, 6, 0.12)" filter="url(#wc-edge)"/>
-      <ellipse cx="1200" cy="100" rx="300" ry="55" fill="rgba(196, 90, 60, 0.1)" filter="url(#wc-edge)"/>
-      <path class="stroke-path" d="M0,90 C400,65 700,120 1000,80 S1400,105 1600,85" stroke="#D97706" stroke-width="1.5" fill="none" filter="url(#pencil)" opacity="0.35"/>
-    </svg>
-  </div>
-
   <!-- ═══════════════ PROJECTS ═══════════════ -->
   <section id="projects" style="position:relative;">
-    <svg class="paint-bg" data-paint viewBox="0 0 1600 1100" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect width="1600" height="1100" fill="rgba(217, 119, 6, 0.025)"/>
-      <ellipse cx="1300" cy="300" rx="380" ry="280" fill="rgba(217, 119, 6, 0.1)" filter="url(#wc-lg)"/>
-      <ellipse cx="1350" cy="350" rx="220" ry="160" fill="rgba(196, 90, 60, 0.08)" filter="url(#wc)"/>
-      <ellipse cx="200" cy="800" rx="350" ry="250" fill="rgba(91, 155, 213, 0.08)" filter="url(#wc-lg)"/>
-      <ellipse cx="300" cy="850" rx="200" ry="140" fill="rgba(139, 126, 200, 0.06)" filter="url(#wc)"/>
-    </svg>
-    <svg class="wc-blob" data-paint style="top:100px;right:-40px;width:400px;height:350px;animation:floatSlow 9s ease-in-out 1s infinite;" viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="200" cy="175" rx="160" ry="130" fill="rgba(217, 119, 6, 0.16)" filter="url(#wc)"/>
-      <ellipse cx="220" cy="160" rx="100" ry="80" fill="rgba(245, 158, 11, 0.12)" filter="url(#wc-sm)"/>
+    <div class="geo-art" data-draw>
+      <svg viewBox="0 0 1600 1100" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- Tessellation / hexagonal grid fragment -->
+        <path class="geo-path" d="M1300,200 L1350,230 L1350,290 L1300,320 L1250,290 L1250,230 Z" stroke="var(--amber)" stroke-width="0.8" fill="none" opacity="0.15"/>
+        <path class="geo-path" d="M1400,200 L1450,230 L1450,290 L1400,320 L1350,290 L1350,230 Z" stroke="var(--amber)" stroke-width="0.8" fill="none" opacity="0.12"/>
+        <path class="geo-path" d="M1350,290 L1400,320 L1400,380 L1350,410 L1300,380 L1300,320 Z" stroke="var(--amber)" stroke-width="0.8" fill="none" opacity="0.1"/>
+        <path class="geo-path" d="M1250,290 L1300,320 L1300,380 L1250,410 L1200,380 L1200,320 Z" stroke="var(--amber)" stroke-width="0.8" fill="none" opacity="0.12"/>
+        <!-- Bezier construction -->
+        <path class="geo-path" d="M100,800 C200,400 400,600 600,300" stroke="var(--blue)" stroke-width="1.2" fill="none" opacity="0.18" filter="url(#pencil)"/>
+        <!-- Control points -->
+        <line class="geo-path" x1="100" y1="800" x2="200" y2="400" stroke="var(--blue)" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.1"/>
+        <line class="geo-path" x1="400" y1="600" x2="600" y2="300" stroke="var(--blue)" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.1"/>
+      </svg>
+    </div>
+    <svg class="wc-accent" data-paint style="top:100px;right:-30px;width:360px;height:300px;" viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="60,30 310,50 350,170 280,280 80,260 20,130" fill="rgba(217, 119, 6, 0.1)" filter="url(#wc)"/>
     </svg>
     <div class="content reveal">
       <h2 class="r-child">Projects</h2>
@@ -844,22 +793,23 @@
     </div>
   </section>
 
-  <!-- ═══════ DIVIDER ═══════ -->
-  <div class="wc-divider" data-paint>
-    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="400" cy="90" rx="350" ry="60" fill="rgba(122, 155, 87, 0.12)" filter="url(#wc-edge)"/>
-      <ellipse cx="1100" cy="85" rx="380" ry="65" fill="rgba(91, 155, 213, 0.1)" filter="url(#wc-edge)"/>
-      <path class="stroke-path" d="M0,95 C300,75 600,120 900,80 S1300,100 1600,85" stroke="#7A9B57" stroke-width="1.4" fill="none" filter="url(#pencil)" opacity="0.3"/>
-    </svg>
-  </div>
-
   <!-- ═══════════════ INTERESTS ═══════════════ -->
   <section id="interests" style="position:relative;">
-    <svg class="paint-bg" data-paint viewBox="0 0 1600 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect width="1600" height="700" fill="rgba(122, 155, 87, 0.03)"/>
-      <ellipse cx="300" cy="200" rx="350" ry="250" fill="rgba(122, 155, 87, 0.09)" filter="url(#wc-lg)"/>
-      <ellipse cx="350" cy="250" rx="200" ry="150" fill="rgba(91, 155, 213, 0.06)" filter="url(#wc)"/>
-      <ellipse cx="1300" cy="400" rx="300" ry="200" fill="rgba(139, 126, 200, 0.08)" filter="url(#wc-lg)"/>
+    <div class="geo-art" data-draw>
+      <svg viewBox="0 0 1600 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- Lissajous figure -->
+        <path class="geo-path" d="M200,350 C250,200 350,150 450,250 S550,500 650,350 S750,100 850,250 S950,500 1050,350 S1150,100 1250,250 S1350,500 1450,350" stroke="var(--sage)" stroke-width="1.3" fill="none" opacity="0.18" filter="url(#pencil)"/>
+        <!-- Scattered dots like a scatter plot -->
+        <circle class="geo-path" cx="1300" cy="200" r="3" fill="var(--purple)" opacity="0.2"/>
+        <circle class="geo-path" cx="1340" cy="250" r="2.5" fill="var(--purple)" opacity="0.15"/>
+        <circle class="geo-path" cx="1380" cy="220" r="3" fill="var(--blue)" opacity="0.2"/>
+        <circle class="geo-path" cx="1420" cy="280" r="2" fill="var(--purple)" opacity="0.15"/>
+        <circle class="geo-path" cx="1360" cy="310" r="3.5" fill="var(--blue)" opacity="0.18"/>
+        <circle class="geo-path" cx="1460" cy="240" r="2.5" fill="var(--terracotta)" opacity="0.15"/>
+      </svg>
+    </div>
+    <svg class="wc-accent" data-paint style="top:30px;left:-30px;width:300px;height:260px;" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="30,60 200,15 290,100 260,230 80,250 10,150" fill="rgba(122, 155, 87, 0.09)" filter="url(#wc)"/>
     </svg>
     <div class="content reveal">
       <h2 class="r-child">Interests</h2>
@@ -878,26 +828,27 @@
     </div>
   </section>
 
-  <!-- ═══════ DIVIDER ═══════ -->
-  <div class="wc-divider" data-paint>
-    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="500" cy="90" rx="400" ry="65" fill="rgba(139, 126, 200, 0.12)" filter="url(#wc-edge)"/>
-      <ellipse cx="1100" cy="85" rx="350" ry="55" fill="rgba(196, 90, 60, 0.1)" filter="url(#wc-edge)"/>
-      <path class="stroke-path" d="M0,90 C350,70 700,115 1000,80 S1350,100 1600,85" stroke="#8B7EC8" stroke-width="1.5" fill="none" filter="url(#pencil)" opacity="0.35"/>
-    </svg>
-  </div>
-
   <!-- ═══════════════ CONNECT ═══════════════ -->
   <section id="connect" style="position:relative;">
-    <svg class="paint-bg" data-paint viewBox="0 0 1600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect width="1600" height="800" fill="rgba(139, 126, 200, 0.03)"/>
-      <ellipse cx="200" cy="200" rx="380" ry="280" fill="rgba(139, 126, 200, 0.1)" filter="url(#wc-lg)"/>
-      <ellipse cx="280" cy="250" rx="220" ry="160" fill="rgba(196, 90, 60, 0.07)" filter="url(#wc)"/>
-      <ellipse cx="1400" cy="500" rx="300" ry="220" fill="rgba(91, 155, 213, 0.08)" filter="url(#wc-lg)"/>
-    </svg>
-    <svg class="wc-blob" data-paint style="top:30px;left:-50px;width:400px;height:300px;animation:floatSlow 11s ease-in-out infinite;" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="200" cy="150" rx="160" ry="120" fill="rgba(139, 126, 200, 0.15)" filter="url(#wc)"/>
-      <ellipse cx="180" cy="170" rx="100" ry="70" fill="rgba(91, 155, 213, 0.1)" filter="url(#wc-sm)"/>
+    <div class="geo-art" data-draw>
+      <svg viewBox="0 0 1600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- Network / graph theory nodes -->
+        <circle class="geo-path" cx="1250" cy="200" r="6" fill="var(--purple)" opacity="0.2"/>
+        <circle class="geo-path" cx="1400" cy="300" r="5" fill="var(--blue)" opacity="0.2"/>
+        <circle class="geo-path" cx="1300" cy="400" r="7" fill="var(--terracotta)" opacity="0.2"/>
+        <circle class="geo-path" cx="1450" cy="500" r="5" fill="var(--purple)" opacity="0.15"/>
+        <circle class="geo-path" cx="1200" cy="550" r="6" fill="var(--amber)" opacity="0.2"/>
+        <!-- Edges -->
+        <line class="geo-path" x1="1250" y1="200" x2="1400" y2="300" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.12"/>
+        <line class="geo-path" x1="1400" y1="300" x2="1300" y2="400" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.12"/>
+        <line class="geo-path" x1="1300" y1="400" x2="1450" y2="500" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.12"/>
+        <line class="geo-path" x1="1300" y1="400" x2="1200" y2="550" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.12"/>
+        <line class="geo-path" x1="1250" y1="200" x2="1300" y2="400" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.1"/>
+        <line class="geo-path" x1="1450" y1="500" x2="1200" y2="550" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.1"/>
+      </svg>
+    </div>
+    <svg class="wc-accent" data-paint style="top:20px;left:-40px;width:340px;height:280px;" viewBox="0 0 340 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="40,50 270,20 330,150 280,260 70,270 10,140" fill="rgba(139, 126, 200, 0.09)" filter="url(#wc)"/>
     </svg>
     <div class="content reveal">
       <h2 class="r-child">Connect</h2>
@@ -924,22 +875,6 @@
     </div>
   </section>
 
-  <!-- Bottom decorative band -->
-  <div style="position:relative;height:120px;overflow:hidden;">
-    <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1600 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <g filter="url(#pencil)" opacity="0.25">
-        <path d="M0,20 Q400,15 800,25 T1600,15" stroke="#8B7EC8" stroke-width="1.2" fill="none"/>
-        <path d="M0,35 Q400,38 800,30 T1600,38" stroke="#5B9BD5" stroke-width="1" fill="none"/>
-        <path d="M0,50 Q400,48 800,55 T1600,48" stroke="#C45A3C" stroke-width="1.1" fill="none"/>
-        <path d="M0,65 Q400,68 800,62 T1600,68" stroke="#D97706" stroke-width="1" fill="none"/>
-        <path d="M0,80 Q400,78 800,85 T1600,78" stroke="#7A9B57" stroke-width="0.9" fill="none"/>
-        <path d="M0,95 Q400,98 800,92 T1600,98" stroke="#8B7EC8" stroke-width="1" fill="none"/>
-      </g>
-      <ellipse cx="400" cy="60" rx="350" ry="40" fill="rgba(139, 126, 200, 0.06)" filter="url(#wc-sm)"/>
-      <ellipse cx="1100" cy="60" rx="400" ry="45" fill="rgba(91, 155, 213, 0.05)" filter="url(#wc-sm)"/>
-    </svg>
-  </div>
-
   <footer>
     <div class="content">
       <p>&copy; 2026 JP Zambrano</p>
@@ -948,29 +883,31 @@
   </footer>
 
   <script>
-    // Scroll-triggered reveal for content
+    // Reveal content on scroll
     const revealObs = new IntersectionObserver((entries) => {
       entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('vis');
-          revealObs.unobserve(e.target);
-        }
+        if (e.isIntersecting) { e.target.classList.add('vis'); revealObs.unobserve(e.target); }
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
     document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-    // Scroll-triggered "paint-in" for watercolor backgrounds, blobs, and dividers
+    // Draw geometric art on scroll
+    const drawObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('drawn'); drawObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('[data-draw]').forEach(el => drawObs.observe(el));
+
+    // Paint-in watercolor accents
     const paintObs = new IntersectionObserver((entries) => {
       entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('painted');
-          paintObs.unobserve(e.target);
-        }
+        if (e.isIntersecting) { e.target.classList.add('painted'); paintObs.unobserve(e.target); }
       });
     }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('[data-paint]').forEach(el => paintObs.observe(el));
 
-    // Smooth scroll for nav links
+    // Smooth scroll nav
     document.querySelectorAll('nav a[href^="#"]').forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
@@ -979,7 +916,7 @@
       });
     });
 
-    // Auto-hiding nav
+    // Auto-hide nav
     let lastY = 0;
     const navEl = document.querySelector('nav');
     window.addEventListener('scroll', () => {
@@ -987,21 +924,6 @@
       navEl.style.transform = (y > lastY && y > 140) ? 'translateY(-100%)' : 'translateY(0)';
       lastY = y;
     }, { passive: true });
-
-    // Parallax on floating blobs
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!prefersReduced) {
-      const blobs = document.querySelectorAll('.wc-blob');
-      window.addEventListener('scroll', () => {
-        blobs.forEach(b => {
-          const sec = b.closest('section');
-          if (!sec) return;
-          const rect = sec.getBoundingClientRect();
-          const progress = rect.top / window.innerHeight;
-          b.style.transform = `translateY(${progress * -30}px)`;
-        });
-      }, { passive: true });
-    }
   </script>
 
 </body>
