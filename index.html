@@ -3,927 +3,608 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JP Zambrano</title>
+  <title>JP Zambrano — Research Dossier</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #FAF9F5;
-      --bg-alt: #F3F1EB;
-      --text: #141413;
-      --text-secondary: #4a4a47;
-      --text-tertiary: #87867f;
-      --terracotta: #C45A3C;
-      --terracotta-deep: #9A3412;
-      --terracotta-light: #E8C4B0;
-      --amber: #D97706;
-      --amber-bright: #F59E0B;
-      --purple: #8B7EC8;
-      --purple-deep: #6C5BAE;
-      --purple-light: rgba(139, 126, 200, 0.18);
-      --blue: #5B9BD5;
-      --blue-deep: #3B82C4;
-      --blue-light: rgba(91, 155, 213, 0.15);
-      --sage: #7A9B57;
-      --warm-gray: #87867f;
-      --sand: #D4C4A8;
-      --cream: #F5F0E1;
-      --border: #E2DDD4;
-      --grid: rgba(0,0,0,0.04);
-      --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
-      --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --bg: #F4F1EA;
+      --text: #1c1c1a;
+      --text-2: #4a4843;
+      --text-3: #8a8780;
+      --accent: #D97757;
+      --border: #d4d0c8;
+      --rule: #c8c4bc;
+      --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+      --sans: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      --mono: 'IBM Plex Mono', 'Courier New', monospace;
+      --max-w: 1060px;
+      --gutter: 32px;
     }
 
-    html { scroll-behavior: smooth; }
-
     body {
-      font-family: var(--serif);
-      font-size: 18px; line-height: 1.7;
-      color: var(--text); background-color: var(--bg);
+      font-family: var(--sans); font-size: 16px; line-height: 1.65;
+      color: var(--text); background: var(--bg);
       -webkit-font-smoothing: antialiased;
-      letter-spacing: -0.01em; overflow-x: hidden;
-      background-image:
-        linear-gradient(var(--grid) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-      background-size: 28px 28px;
-      background-position: -1px -1px;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
 
-    .svg-filters { position: absolute; width: 0; height: 0; overflow: hidden; }
+    /* ── TYPOGRAPHY ── */
+    h1, h2, h3 { font-family: var(--serif); font-weight: 400; }
+    .label {
+      font-family: var(--mono); font-size: 11px; font-weight: 400;
+      text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-3);
+    }
 
-    /* ═══════════ NAV ═══════════ */
+    /* ── RULES ── */
+    hr.rule {
+      border: none; border-top: 1px solid var(--rule);
+      max-width: var(--max-w); margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+    hr.rule.full { max-width: none; }
+
+    /* ── NAV ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(250, 249, 245, 0.92);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+      background: var(--bg); border-bottom: 1px solid var(--rule);
     }
     .nav-inner {
-      max-width: 1200px; margin: 0 auto; padding: 16px 32px;
+      max-width: var(--max-w); margin: 0 auto; padding: 14px var(--gutter);
       display: flex; align-items: center; justify-content: space-between;
     }
     .nav-name {
-      font-family: var(--sans); font-size: 15px; font-weight: 600;
-      letter-spacing: 0.02em; color: var(--text); text-decoration: none;
+      font-family: var(--mono); font-size: 12px; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text); text-decoration: none;
     }
-    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links { display: flex; gap: 28px; }
     .nav-links a {
-      font-family: var(--sans); font-size: 14px; font-weight: 400;
-      color: var(--text-tertiary); text-decoration: none;
-      transition: color 0.25s; position: relative;
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+      color: var(--text-3); text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.1s;
     }
-    .nav-links a::after {
-      content: ''; position: absolute; bottom: -4px; left: 0;
-      width: 0; height: 1.5px; background: var(--terracotta);
-      transition: width 0.3s cubic-bezier(0.33, 1, 0.68, 1);
-    }
-    .nav-links a:hover { color: var(--text); }
-    .nav-links a:hover::after { width: 100%; }
+    .nav-links a:hover { border-bottom-color: var(--text); color: var(--text); }
 
-    /* ═══════════ LAYOUT ═══════════ */
-    section { padding: 120px 32px; position: relative; overflow: hidden; }
-    .content { max-width: 680px; margin: 0 auto; position: relative; z-index: 2; }
+    /* ── PROGRESS ── */
+    .progress-track {
+      position: fixed; top: 47px; left: 0; right: 0; height: 1px;
+      background: var(--border); z-index: 99;
+    }
+    .progress-fill { height: 100%; width: 0%; background: var(--accent); }
 
-    /* ═══════════ TYPOGRAPHY ═══════════ */
-    h1 {
-      font-family: var(--serif);
-      font-size: clamp(42px, 6vw, 72px);
-      font-weight: 300; line-height: 1.08;
-      letter-spacing: -0.03em;
-    }
-    h2 {
-      font-family: var(--sans); font-size: 12px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      color: var(--terracotta); margin-bottom: 20px;
-      display: flex; align-items: center; gap: 12px;
-    }
-    h2::before {
-      content: ''; width: 24px; height: 1.5px; background: var(--terracotta);
-    }
-    h3 {
-      font-family: var(--serif);
-      font-size: clamp(28px, 3.5vw, 40px);
-      font-weight: 400; line-height: 1.2;
-      letter-spacing: -0.02em; margin-bottom: 28px;
-    }
-    p { margin-bottom: 22px; }
-    p:last-child { margin-bottom: 0; }
-    a {
-      color: var(--terracotta); text-decoration: underline;
-      text-decoration-color: var(--terracotta-light);
-      text-underline-offset: 3px;
-      transition: text-decoration-color 0.25s, color 0.25s;
-    }
-    a:hover { text-decoration-color: var(--terracotta); }
-
-    .drop-cap::first-letter {
-      float: left; font-size: 3.8em; line-height: 0.8;
-      font-weight: 400; margin-right: 8px; margin-top: 6px;
-      color: var(--terracotta); font-family: var(--serif);
-    }
-
-    /* ═══════════ HERO ═══════════ */
+    /* ── HERO ── */
     .hero {
-      min-height: 100vh; display: flex; align-items: center;
-      padding-top: 80px; position: relative; overflow: hidden;
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 var(--gutter) 80px;
     }
-    .hero .content { max-width: 800px; position: relative; z-index: 3; }
-
-    /* Graph paper darker grid for hero */
-    .hero::before {
-      content: ''; position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(139,126,200,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(139,126,200,0.06) 1px, transparent 1px);
-      background-size: 28px 28px;
-      background-position: -1px -1px;
-      z-index: 0;
+    #heroCanvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      pointer-events: none;
     }
-
-    /* Decorative math curves in hero background */
-    .hero-math {
-      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    .hero-content {
+      position: relative; z-index: 1;
+      max-width: var(--max-w); margin: 0 auto; width: 100%;
     }
-    .hero-math svg {
-      position: absolute; width: 100%; height: 100%;
+    .hero-content h1 {
+      font-size: 42px; line-height: 1.15; margin-bottom: 20px;
     }
-    .hero-math .draw {
-      stroke-dasharray: 2000;
-      stroke-dashoffset: 2000;
-      animation: drawLine 3s cubic-bezier(0.33, 1, 0.68, 1) 0.4s forwards;
+    .hero-meta {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 20px;
     }
-    .hero-math .draw-d2 { animation-delay: 0.8s; }
-    .hero-math .draw-d3 { animation-delay: 1.2s; }
-    .hero-math .draw-d4 { animation-delay: 1.6s; }
-    .hero-math .draw-d5 { animation-delay: 2.0s; }
-
-    /* Watercolor wash behind hero name — paints in */
-    .hero-wash {
-      position: absolute; pointer-events: none; z-index: 1;
-      opacity: 0;
+    .hero-meta .label { color: var(--accent); }
+    .hero-meta .divider {
+      width: 40px; height: 1px; background: var(--rule);
     }
-    .hero-wash-1 {
-      top: 10%; right: 5%; width: 500px; height: 400px;
-      animation: paintIn 2.5s cubic-bezier(0.33, 1, 0.68, 1) 0.6s forwards;
+    .hero-desc {
+      max-width: 480px; font-size: 16px; line-height: 1.7;
+      color: var(--text-2);
     }
-    .hero-wash-2 {
-      bottom: 10%; left: 5%; width: 400px; height: 350px;
-      animation: paintIn 2.5s cubic-bezier(0.33, 1, 0.68, 1) 1.2s forwards;
-    }
-
-    /* Paint-in text effect */
-    .paint-text {
-      position: relative; display: inline;
-    }
-    .paint-text .paint-fill {
-      position: absolute; inset: -8px -12px;
-      z-index: -1; pointer-events: none;
-      opacity: 0;
-      animation: paintIn 2s cubic-bezier(0.33, 1, 0.68, 1) 0.5s forwards;
-    }
-    .paint-text .accent {
-      color: var(--terracotta);
-      position: relative;
-    }
-    .paint-text .accent::after {
-      content: '';
-      position: absolute; left: -4px; right: -4px; bottom: 2px; top: 60%;
-      background: rgba(196, 90, 60, 0.12);
-      z-index: -1;
-      transform: scaleX(0); transform-origin: left;
-      animation: brushStroke 1.2s cubic-bezier(0.33, 1, 0.68, 1) 1.2s forwards;
-    }
-
-    .hero-label {
-      font-family: var(--sans); font-size: 13px; font-weight: 600;
-      color: var(--terracotta); margin-bottom: 28px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      opacity: 0; animation: slideUp 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.3s forwards;
-    }
-    .hero h1 {
-      margin-bottom: 36px;
-      opacity: 0; animation: slideUp 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.45s forwards;
-    }
-    .hero-intro {
-      font-size: 20px; line-height: 1.75; color: var(--text-secondary); max-width: 580px;
-      opacity: 0; animation: slideUp 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.7s forwards;
-    }
-    .hero-intro em { font-style: italic; color: var(--purple-deep); }
     .scroll-cue {
-      margin-top: 72px; display: flex; align-items: center; gap: 14px;
-      opacity: 0; animation: slideUp 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.85s forwards;
-    }
-    .scroll-cue span {
-      font-family: var(--sans); font-size: 11px; font-weight: 500;
-      color: var(--text-tertiary); letter-spacing: 0.08em; text-transform: uppercase;
-    }
-    .scroll-line {
-      width: 48px; height: 1px; background: var(--terracotta-light);
-      transform-origin: left;
-      animation: lineGrow 0.8s cubic-bezier(0.33, 1, 0.68, 1) 1.6s both;
-    }
-    .scroll-dot {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--terracotta);
-      animation: pulse 2s ease-in-out 2s infinite;
+      position: absolute; bottom: 32px; right: var(--gutter);
+      font-family: var(--mono); font-size: 10px; color: var(--text-3);
+      letter-spacing: 0.1em;
     }
 
-    /* ═══════════ GEOMETRIC SCROLL ART ═══════════ */
-    .geo-art {
-      position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+    /* ── SECTION GRID ── */
+    .sg {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: 72px var(--gutter);
+      display: grid; grid-template-columns: 180px 1fr; gap: 48px;
     }
-    .geo-art svg { position: absolute; width: 100%; height: 100%; }
-    .geo-art .geo-path {
-      stroke-dasharray: 3000;
-      stroke-dashoffset: 3000;
-      transition: stroke-dashoffset 2.5s cubic-bezier(0.33, 1, 0.68, 1);
-    }
-    .geo-art.drawn .geo-path { stroke-dashoffset: 0; }
+    .sg-label { padding-top: 4px; }
+    .sg-content p { color: var(--text-2); margin-bottom: 16px; }
+    .sg-content p:last-child { margin-bottom: 0; }
 
-    /* Watercolor accents — non-circular shapes */
-    .wc-accent {
-      position: absolute; pointer-events: none; z-index: 0;
-      opacity: 0; transform: scale(0.5);
-      transition: opacity 1.5s cubic-bezier(0.33, 1, 0.68, 1),
-                  transform 2s cubic-bezier(0.33, 1, 0.68, 1);
-    }
-    .wc-accent.painted { opacity: 1; transform: scale(1); }
-
-    /* ═══════════ REVEAL SYSTEM ═══════════ */
-    .reveal {
-      opacity: 0; transform: translateY(48px); transition: none;
-    }
-    .reveal.vis {
-      animation: revealUp 1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
-    }
-    .r-child {
-      opacity: 0; transform: translateY(30px);
-    }
-    .reveal.vis .r-child {
-      animation: revealUp 0.8s cubic-bezier(0.33, 1, 0.68, 1) forwards;
-    }
-    .reveal.vis .r-child:nth-child(1) { animation-delay: 0.08s; }
-    .reveal.vis .r-child:nth-child(2) { animation-delay: 0.16s; }
-    .reveal.vis .r-child:nth-child(3) { animation-delay: 0.24s; }
-    .reveal.vis .r-child:nth-child(4) { animation-delay: 0.32s; }
-    .reveal.vis .r-child:nth-child(5) { animation-delay: 0.40s; }
-    .reveal.vis .r-child:nth-child(6) { animation-delay: 0.48s; }
-    .reveal.vis .r-child:nth-child(7) { animation-delay: 0.56s; }
-    .reveal.vis .r-child:nth-child(8) { animation-delay: 0.64s; }
-    .reveal.vis .r-child:nth-child(9) { animation-delay: 0.72s; }
-    .reveal.vis .r-child:nth-child(10) { animation-delay: 0.80s; }
-
-    .stg { opacity: 0; transform: translateY(28px); }
-    .reveal.vis .stg {
-      animation: revealUp 0.75s cubic-bezier(0.33, 1, 0.68, 1) forwards;
-    }
-    .reveal.vis .stg:nth-child(1) { animation-delay: 0.2s; }
-    .reveal.vis .stg:nth-child(2) { animation-delay: 0.35s; }
-    .reveal.vis .stg:nth-child(3) { animation-delay: 0.5s; }
-    .reveal.vis .stg:nth-child(4) { animation-delay: 0.65s; }
-
-    /* ═══════════ KEYFRAMES ═══════════ */
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes revealUp {
-      from { opacity: 0; transform: translateY(48px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes drawLine {
-      to { stroke-dashoffset: 0; }
-    }
-    @keyframes paintIn {
-      0% { opacity: 0; transform: scale(0.3) rotate(-5deg); filter: blur(8px); }
-      60% { opacity: 0.85; filter: blur(0); }
-      100% { opacity: 1; transform: scale(1) rotate(0deg); filter: blur(0); }
-    }
-    @keyframes brushStroke {
-      from { transform: scaleX(0); }
-      to { transform: scaleX(1); }
-    }
-    @keyframes lineGrow {
-      from { transform: scaleX(0); }
-      to { transform: scaleX(1); }
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.7); }
+    .columns-2 {
+      column-count: 2; column-gap: 48px;
+      column-rule: 1px solid var(--border);
     }
 
-    /* ═══════════ PULL QUOTE ═══════════ */
-    .pull-quote {
-      font-family: var(--serif); font-style: italic;
-      font-size: clamp(22px, 3vw, 30px);
-      font-weight: 300; line-height: 1.5; color: var(--text);
-      padding: 40px 0 40px 36px; margin: 56px 0;
-      position: relative;
+    /* ── SCROLLYTELLING ── */
+    .scrolly { position: relative; }
+    .scrolly-sticky {
+      position: sticky; top: 0; height: 100vh;
+      display: flex; align-items: center; justify-content: center;
     }
-    .pull-quote::before {
-      content: ''; position: absolute; left: 0; top: 0;
-      width: 4px; height: 100%;
-      background: linear-gradient(180deg, var(--purple), var(--blue), var(--terracotta));
-      border-radius: 2px;
+    #timelineCanvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
     }
-    .pull-quote::after {
-      content: '\201C'; position: absolute; top: 16px; left: 44px;
-      font-size: 90px; font-style: normal; line-height: 1;
-      color: var(--purple-light); font-family: var(--serif);
+    .scrolly-beats { position: relative; z-index: 2; }
+    .beat {
+      min-height: 85vh; display: flex; align-items: center;
+      padding: 0 var(--gutter);
+    }
+    .beat:last-child { min-height: 50vh; }
+    .beat-card {
+      max-width: 340px; padding: 24px 28px;
+      background: rgba(244,241,234,0.94);
+      border: 1px solid var(--rule);
+      opacity: 0; transition: opacity 0.4s ease;
+    }
+    .beat.active .beat-card { opacity: 1; }
+    .beat-card .label { margin-bottom: 8px; color: var(--accent); }
+    .beat-card h3 { font-size: 19px; line-height: 1.35; margin-bottom: 10px; }
+    .beat-card p { font-size: 14px; line-height: 1.65; color: var(--text-2); }
+
+    /* ── WORK LIST ── */
+    .work-list { border-top: 1px solid var(--border); }
+    .work-entry {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 24px; padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none; color: var(--text);
+      transition: background 0.08s, color 0.08s, padding 0.08s;
+    }
+    .work-entry:hover {
+      background: var(--text); color: var(--bg);
+      padding-left: 14px; padding-right: 14px;
+    }
+    .work-title { font-family: var(--serif); font-size: 18px; }
+    .work-desc {
+      font-size: 13px; color: var(--text-3); margin-top: 2px;
+      transition: color 0.08s;
+    }
+    .work-entry:hover .work-desc { color: rgba(244,241,234,0.6); }
+    .work-meta {
+      font-family: var(--mono); font-size: 12px; color: var(--text-3);
+      white-space: nowrap; transition: color 0.08s;
+    }
+    .work-entry:hover .work-meta { color: rgba(244,241,234,0.5); }
+
+    /* ── KEYWORDS ── */
+    .keyword-grid {
+      display: flex; flex-wrap: wrap; gap: 0;
+    }
+    .keyword-grid span {
+      font-family: var(--mono); font-size: 13px; color: var(--text-2);
+      padding: 10px 20px;
+      border: 1px solid var(--border);
+      margin-right: -1px; margin-bottom: -1px;
+      transition: background 0.08s, color 0.08s;
+      cursor: default;
+    }
+    .keyword-grid span:hover {
+      background: var(--accent); color: var(--bg);
+      border-color: var(--accent); position: relative; z-index: 1;
     }
 
-    /* ═══════════ TIMELINE ═══════════ */
-    .timeline { margin-top: 48px; position: relative; padding-left: 28px; }
-    .timeline::before {
-      content: ''; position: absolute; left: 4px; top: 0; bottom: 0;
-      width: 2px;
-      background: linear-gradient(180deg, var(--purple), var(--blue), var(--terracotta-light));
-    }
-    .timeline-item { padding: 28px 0 36px; position: relative; }
-    .timeline-item + .timeline-item { border-top: 1px solid rgba(226, 221, 212, 0.5); }
-    .timeline-item::before {
-      content: ''; position: absolute; left: -28px; top: 36px;
-      width: 11px; height: 11px; border-radius: 50%;
-      background: var(--bg); border: 2.5px solid var(--purple); z-index: 1;
-    }
-    .timeline-item:first-child::before { background: var(--purple); border-color: var(--purple); }
-    .timeline-meta {
-      font-family: var(--sans); font-size: 12px; font-weight: 600;
-      color: var(--terracotta); margin-bottom: 6px;
-      letter-spacing: 0.04em; text-transform: uppercase;
-    }
-    .timeline-role {
-      font-family: var(--serif); font-size: 23px;
-      font-weight: 400; line-height: 1.3; margin-bottom: 4px;
-    }
-    .timeline-org {
-      font-family: var(--sans); font-size: 14px; font-weight: 500;
-      color: var(--text-secondary); margin-bottom: 14px;
-    }
-    .timeline-desc { font-size: 16px; line-height: 1.7; color: var(--text-secondary); }
-
-    /* ═══════════ PROJECTS ═══════════ */
-    .projects-grid { margin-top: 48px; display: grid; grid-template-columns: 1fr; gap: 28px; }
-    .project-card {
-      padding: 40px; background: rgba(250, 249, 245, 0.9);
-      border: 1px solid var(--border); border-radius: 4px;
-      transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1);
-      position: relative; overflow: hidden;
-    }
-    .project-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-      background: linear-gradient(90deg, var(--purple), var(--blue), var(--terracotta));
-      transform: scaleX(0); transform-origin: left;
-      transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
-    }
-    .project-card::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, var(--purple-light), var(--blue-light), transparent);
-      opacity: 0; transition: opacity 0.5s;
-    }
-    .project-card:hover {
-      border-color: var(--purple);
-      box-shadow: 0 16px 48px rgba(108, 91, 174, 0.12);
-      transform: translateY(-6px);
-    }
-    .project-card:hover::before { transform: scaleX(1); }
-    .project-card:hover::after { opacity: 1; }
-    .project-card > * { position: relative; z-index: 1; }
-    .project-tag {
-      font-family: var(--sans); font-size: 11px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      padding: 4px 12px; border-radius: 2px;
-      display: inline-block; margin-bottom: 16px;
-    }
-    .project-tag.tag-purple { color: #fff; background: var(--purple); }
-    .project-tag.tag-blue { color: #fff; background: var(--blue-deep); }
-    .project-tag.tag-terra { color: #fff; background: var(--terracotta); }
-    .project-title {
-      font-family: var(--serif); font-size: 24px; font-weight: 400;
-      margin-bottom: 14px; line-height: 1.3;
-    }
-    .project-desc {
-      font-size: 16px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 20px;
-    }
-    .project-link {
-      font-family: var(--sans); font-size: 13px; font-weight: 600;
-      display: inline-flex; align-items: center; gap: 8px;
-      color: var(--purple-deep); text-decoration: none;
-    }
-    .project-link .arrow { transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1); }
-    .project-card:hover .project-link .arrow { transform: translateX(6px); }
-
-    /* ═══════════ INTERESTS ═══════════ */
-    .interests-list { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; }
-    .interest-tag {
-      font-family: var(--sans); font-size: 14px; font-weight: 500;
-      padding: 10px 22px; border: 1.5px solid var(--border);
-      border-radius: 100px; color: var(--text-secondary);
-      background: rgba(250,249,245,0.8);
-      transition: all 0.35s cubic-bezier(0.33, 1, 0.68, 1);
-      cursor: default; position: relative; overflow: hidden;
-    }
-    .interest-tag:nth-child(odd) { --tag-color: var(--purple); --tag-bg: var(--purple-light); }
-    .interest-tag:nth-child(even) { --tag-color: var(--blue-deep); --tag-bg: var(--blue-light); }
-    .interest-tag::before {
-      content: ''; position: absolute; inset: 0;
-      background: var(--tag-bg); opacity: 0; transition: opacity 0.35s;
-    }
-    .interest-tag:hover {
-      border-color: var(--tag-color); color: var(--tag-color);
-      transform: translateY(-3px);
-      box-shadow: 0 6px 18px rgba(108, 91, 174, 0.15);
-    }
-    .interest-tag:hover::before { opacity: 1; }
-
-    /* ═══════════ SOCIAL ═══════════ */
-    .social-links { margin-top: 48px; }
-    .social-link {
+    /* ── CORRESPONDENCE ── */
+    .link-list { border-top: 1px solid var(--border); }
+    .link-list a {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 24px 0; border-bottom: 1px solid var(--border);
-      text-decoration: none;
-      transition: all 0.35s cubic-bezier(0.33, 1, 0.68, 1);
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      text-decoration: none; color: var(--text);
+      font-family: var(--sans); font-size: 15px; font-weight: 500;
+      transition: background 0.08s, color 0.08s, padding 0.08s;
     }
-    .social-link:first-child { border-top: 1px solid var(--border); }
-    .social-link:hover {
-      padding-left: 16px;
-      background: linear-gradient(90deg, var(--purple-light), transparent);
+    .link-list a:hover {
+      background: var(--text); color: var(--bg);
+      padding-left: 14px; padding-right: 14px;
     }
-    .social-link-name {
-      font-family: var(--sans); font-size: 17px; font-weight: 600; color: var(--text);
+    .link-list .handle {
+      font-family: var(--mono); font-size: 12px; color: var(--text-3);
+      transition: color 0.08s;
     }
-    .social-link-handle {
-      font-family: var(--sans); font-size: 13px; color: var(--text-tertiary); margin-top: 2px;
-    }
-    .social-link-arrow {
-      font-size: 22px; color: var(--text-tertiary);
-      transition: all 0.35s cubic-bezier(0.33, 1, 0.68, 1);
-    }
-    .social-link:hover .social-link-arrow { transform: translateX(8px); color: var(--purple-deep); }
+    .link-list a:hover .handle { color: rgba(244,241,234,0.5); }
 
-    /* ═══════════ FOOTER ═══════════ */
+    /* ── FOOTER ── */
     footer {
-      padding: 48px 32px; border-top: 1px solid var(--border);
-      background: rgba(243,241,235,0.9);
+      padding: 40px var(--gutter); max-width: var(--max-w); margin: 0 auto;
+      font-family: var(--mono); font-size: 11px; color: var(--text-3);
+      display: flex; justify-content: space-between;
     }
-    footer .content { display: flex; justify-content: space-between; align-items: center; }
-    footer p { font-family: var(--sans); font-size: 13px; color: var(--text-tertiary); }
 
-    /* ═══════════ RESPONSIVE ═══════════ */
+    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      section { padding: 80px 24px; }
-      .nav-inner { padding: 14px 24px; }
-      .nav-links { gap: 18px; }
-      .nav-links a { font-size: 13px; }
-      .hero { min-height: auto; padding-top: 120px; padding-bottom: 80px; }
-      .geo-art, .wc-accent, .hero-wash { display: none; }
-      .timeline { padding-left: 24px; }
-      .timeline-item::before { left: -24px; }
-      footer .content { flex-direction: column; gap: 8px; text-align: center; }
-      .drop-cap::first-letter { font-size: 3em; }
-    }
-    @media (max-width: 480px) {
-      .nav-links { gap: 14px; }
-      .interest-tag { font-size: 13px; padding: 8px 16px; }
-      h2::before { display: none; }
+      :root { --gutter: 20px; }
+      .hero-content h1 { font-size: 30px; }
+      .sg { grid-template-columns: 1fr; gap: 16px; padding: 48px var(--gutter); }
+      .columns-2 { column-count: 1; }
+      .beat-card { max-width: 260px; }
+      .scroll-cue { display: none; }
+      footer { flex-direction: column; gap: 4px; }
     }
   </style>
 </head>
 <body>
 
-  <svg class="svg-filters" aria-hidden="true">
-    <defs>
-      <filter id="wc" x="-30%" y="-30%" width="160%" height="160%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="5" seed="2" result="n"/>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="35" xChannelSelector="R" yChannelSelector="G" result="d"/>
-        <feGaussianBlur in="d" stdDeviation="5"/>
-      </filter>
-      <filter id="wc-sm" x="-20%" y="-20%" width="140%" height="140%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="4" seed="5" result="n"/>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="20" xChannelSelector="R" yChannelSelector="G" result="d"/>
-        <feGaussianBlur in="d" stdDeviation="3"/>
-      </filter>
-      <filter id="pencil" x="-5%" y="-40%" width="110%" height="180%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.6 0.015" numOctaves="3" seed="1" result="n"/>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
-      </filter>
-    </defs>
-  </svg>
-
   <nav>
     <div class="nav-inner">
       <a href="#top" class="nav-name">JP Zambrano</a>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#research">Research</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#connect">Connect</a></li>
-      </ul>
+      <div class="nav-links">
+        <a href="#abstract">Abstract</a>
+        <a href="#curriculum">Curriculum</a>
+        <a href="#work">Work</a>
+        <a href="#correspondence">Correspondence</a>
+      </div>
     </div>
   </nav>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
 
-  <!-- ═══════════════ HERO ═══════════════ -->
+  <!-- ═══ HERO ═══ -->
   <section class="hero" id="top">
-
-    <!-- Mathematical curves drawn on graph paper -->
-    <div class="hero-math">
-      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <!-- Sine wave -->
-        <path class="draw" d="M-50,450 C50,300 150,300 250,450 S450,600 550,450 S750,300 850,450 S1050,600 1150,450 S1350,300 1450,450 S1650,600 1750,450" stroke="var(--purple)" stroke-width="1.8" fill="none" opacity="0.3" filter="url(#pencil)"/>
-        <!-- Exponential curve -->
-        <path class="draw draw-d2" d="M100,800 Q300,790 500,750 T900,500 T1200,200 T1500,50" stroke="var(--blue)" stroke-width="1.5" fill="none" opacity="0.25" filter="url(#pencil)"/>
-        <!-- Parabola -->
-        <path class="draw draw-d3" d="M200,100 Q800,900 1400,100" stroke="var(--terracotta)" stroke-width="1.6" fill="none" opacity="0.2" filter="url(#pencil)"/>
-        <!-- Golden spiral approximation -->
-        <path class="draw draw-d4" d="M800,450 C800,380 860,320 930,320 S1060,380 1060,450 S1000,580 930,580 S800,520 800,450 Q800,350 900,300 T1100,350 T1100,550 T850,600 T750,400" stroke="var(--amber)" stroke-width="1.4" fill="none" opacity="0.2" filter="url(#pencil)"/>
-        <!-- Tangent line -->
-        <path class="draw draw-d5" d="M0,700 L1600,200" stroke="var(--warm-gray)" stroke-width="0.8" fill="none" opacity="0.15"/>
-        <!-- Axes -->
-        <line class="draw" x1="100" y1="0" x2="100" y2="900" stroke="var(--warm-gray)" stroke-width="0.6" opacity="0.12"/>
-        <line class="draw draw-d2" x1="0" y1="450" x2="1600" y2="450" stroke="var(--warm-gray)" stroke-width="0.6" opacity="0.12"/>
-      </svg>
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-content">
+      <div class="hero-meta">
+        <span class="label">Research Dossier</span>
+        <span class="divider"></span>
+        <span class="label">No. 001</span>
+      </div>
+      <h1>JP Zambrano</h1>
+      <p class="hero-desc">Background, ongoing work, and research interests in mathematics and economics. A structured account of education, positions held, and the questions driving current inquiry.</p>
     </div>
+    <div class="scroll-cue">SCROLL</div>
+  </section>
 
-    <!-- Watercolor washes — angular, not circular -->
-    <svg class="hero-wash hero-wash-1" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <polygon points="50,80 350,20 480,150 420,350 200,380 30,250" fill="rgba(139, 126, 200, 0.12)" filter="url(#wc)"/>
-      <polygon points="100,120 300,60 400,200 320,340 150,300" fill="rgba(91, 155, 213, 0.08)" filter="url(#wc-sm)"/>
-    </svg>
-    <svg class="hero-wash hero-wash-2" viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <polygon points="30,100 200,20 380,120 350,280 180,340 20,250" fill="rgba(196, 90, 60, 0.1)" filter="url(#wc)"/>
-      <polygon points="80,150 220,80 330,180 280,300 120,280" fill="rgba(217, 119, 6, 0.07)" filter="url(#wc-sm)"/>
-    </svg>
+  <hr class="rule full">
 
-    <div class="content">
-      <div class="hero-label">Personal</div>
-      <h1 class="paint-text">
-        Hi, I'm <span class="accent">JP Zambrano</span>.
-        <svg class="paint-fill" viewBox="0 0 600 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <polygon points="5,15 590,5 598,40 585,90 10,95 2,60" fill="rgba(139, 126, 200, 0.06)" filter="url(#wc)"/>
-        </svg>
-      </h1>
-      <p class="hero-intro">
-        I study <em>mathematics</em> and <em>economics</em> — drawn to the elegance of
-        proofs, the patterns in data, and building things at the intersection of
-        theory and technology.
-      </p>
-      <div class="scroll-cue">
-        <span>Scroll to explore</span>
-        <div class="scroll-line"></div>
-        <div class="scroll-dot"></div>
+  <!-- ═══ ABSTRACT ═══ -->
+  <section class="sg" id="abstract">
+    <div class="sg-label"><span class="label">Abstract</span></div>
+    <div class="sg-content">
+      <div class="columns-2">
+        <p>[Write your background here. This section reads like a research abstract — state who you are, what you study, and the core questions that drive your work. Keep the tone direct and specific. Avoid generalities.]</p>
+        <p>[Continue with your broader intellectual trajectory. What connects your interest in mathematics to economics? What problems do you find most compelling? Where does computation enter the picture? Ground every claim in something concrete.]</p>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════ ABOUT ═══════════════ -->
-  <section id="about" style="position:relative;">
-    <!-- Geometric art: coordinate axes + function -->
-    <div class="geo-art" data-draw>
-      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <!-- Axes on right side -->
-        <line class="geo-path" x1="1100" y1="100" x2="1100" y2="800" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.15"/>
-        <line class="geo-path" x1="900" y1="450" x2="1550" y2="450" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.15"/>
-        <!-- Log curve -->
-        <path class="geo-path" d="M1110,750 Q1150,600 1200,500 T1350,350 T1500,280" stroke="var(--purple)" stroke-width="1.5" fill="none" opacity="0.25" filter="url(#pencil)"/>
-        <!-- Tick marks -->
-        <line class="geo-path" x1="1095" y1="350" x2="1105" y2="350" stroke="var(--warm-gray)" stroke-width="1" opacity="0.2"/>
-        <line class="geo-path" x1="1095" y1="550" x2="1105" y2="550" stroke="var(--warm-gray)" stroke-width="1" opacity="0.2"/>
-        <line class="geo-path" x1="1250" y1="445" x2="1250" y2="455" stroke="var(--warm-gray)" stroke-width="1" opacity="0.2"/>
-        <line class="geo-path" x1="1400" y1="445" x2="1400" y2="455" stroke="var(--warm-gray)" stroke-width="1" opacity="0.2"/>
-      </svg>
-    </div>
-    <!-- Angular watercolor accent -->
-    <svg class="wc-accent" data-paint style="top:40px;right:-30px;width:400px;height:350px;" viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <polygon points="80,30 350,60 380,200 300,330 50,280 20,120" fill="rgba(139, 126, 200, 0.08)" filter="url(#wc)"/>
-    </svg>
-    <div class="content reveal">
-      <h2 class="r-child">Background</h2>
-      <h3 class="r-child">A bit about me</h3>
-      <p class="drop-cap r-child">
-        [Write a few sentences about yourself here. Where you're from, what drives you, what kind of
-        person you are. Keep it conversational and genuine — this is the first thing people read.]
-      </p>
-      <p class="r-child">
-        [Add another paragraph about your broader goals, philosophy, or what you're currently
-        focused on. Think of this section as the "elevator pitch" version of your story.]
-      </p>
-      <div class="pull-quote r-child">
-        [A short quote that captures your philosophy, a favorite saying, or a guiding principle.]
-      </div>
-    </div>
-  </section>
+  <hr class="rule full">
 
-  <!-- ═══════════════ EDUCATION ═══════════════ -->
-  <section id="education" style="position:relative;">
-    <div class="geo-art" data-draw>
-      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <!-- Fibonacci spiral -->
-        <path class="geo-path" d="M200,500 A50,50 0 0,1 250,450 A100,100 0 0,1 350,550 A150,150 0 0,1 200,400 A250,250 0 0,1 450,650 A400,400 0 0,1 50,250" stroke="var(--amber)" stroke-width="1.5" fill="none" opacity="0.2" filter="url(#pencil)"/>
-        <!-- Triangle construction -->
-        <path class="geo-path" d="M1200,200 L1450,700 L950,700 Z" stroke="var(--blue)" stroke-width="1" fill="none" opacity="0.12"/>
-        <!-- Inscribed circle hint -->
-        <circle class="geo-path" cx="1200" cy="530" r="150" stroke="var(--purple)" stroke-width="0.8" fill="none" opacity="0.1"/>
-      </svg>
+  <!-- ═══ CURRICULUM — scrollytelling ═══ -->
+  <div class="sg" id="curriculum">
+    <div class="sg-label"><span class="label">Curriculum Vitae</span></div>
+    <div class="sg-content">
+      <p>Education, positions, and the trajectory of inquiry.</p>
     </div>
-    <svg class="wc-accent" data-paint style="bottom:20px;left:-50px;width:350px;height:300px;" viewBox="0 0 350 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <polygon points="20,80 180,15 340,100 300,260 100,290 10,180" fill="rgba(122, 155, 87, 0.09)" filter="url(#wc)"/>
-    </svg>
-    <div class="content reveal">
-      <h2 class="r-child">Education</h2>
-      <h3 class="r-child">Where I've studied</h3>
-      <div class="timeline">
-        <div class="timeline-item stg">
-          <div class="timeline-meta">2022 — 2026</div>
-          <div class="timeline-role">Bachelor of Science in [Your Major]</div>
-          <div class="timeline-org">[University Name]</div>
-          <p class="timeline-desc">[Describe your studies, relevant coursework, honors, or what you gained from this experience.]</p>
+  </div>
+
+  <div class="scrolly">
+    <div class="scrolly-sticky">
+      <canvas id="timelineCanvas"></canvas>
+    </div>
+    <div class="scrolly-beats">
+      <div class="beat" data-step="0">
+        <div class="beat-card">
+          <div class="label">Education</div>
+          <h3>[University Name], [Year]–[Year]</h3>
+          <p>[Degree, concentration, and relevant coursework. State what you studied and why it matters to your current direction.]</p>
         </div>
-        <div class="timeline-item stg">
-          <div class="timeline-meta">2018 — 2022</div>
-          <div class="timeline-role">[High School or Other Education]</div>
-          <div class="timeline-org">[School Name]</div>
-          <p class="timeline-desc">[Any relevant achievements, activities, or formative experiences from this period.]</p>
+      </div>
+      <div class="beat" data-step="1">
+        <div class="beat-card">
+          <div class="label">Position</div>
+          <h3>[Title] at [Organization]</h3>
+          <p>[What you did and what it produced. One concrete outcome is worth more than three vague responsibilities.]</p>
+        </div>
+      </div>
+      <div class="beat" data-step="2">
+        <div class="beat-card">
+          <div class="label">Research</div>
+          <h3>[Project or Paper Title]</h3>
+          <p>[The question, your method, and what you found. This is where formal training meets real-world application.]</p>
+        </div>
+      </div>
+      <div class="beat" data-step="3">
+        <div class="beat-card">
+          <div class="label">Projects</div>
+          <h3>[Project Name]</h3>
+          <p>[What you built, the tools used, and the problem it addresses. Demonstrate range without overstating scope.]</p>
+        </div>
+      </div>
+      <div class="beat" data-step="4">
+        <div class="beat-card">
+          <div class="label">Trajectory</div>
+          <h3>Open questions</h3>
+          <p>[Where you are headed — graduate study, industry research, independent work. State the direction and the reasoning behind it.]</p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- ═══════════════ EXPERIENCE ═══════════════ -->
-  <section id="experience" style="position:relative;">
-    <div class="geo-art" data-draw>
-      <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <!-- Supply/demand curves -->
-        <line class="geo-path" x1="1150" y1="100" x2="1150" y2="850" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.15"/>
-        <line class="geo-path" x1="1000" y1="700" x2="1550" y2="700" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.15"/>
-        <!-- Demand curve (downward) -->
-        <path class="geo-path" d="M1170,180 Q1250,400 1500,650" stroke="var(--terracotta)" stroke-width="1.5" fill="none" opacity="0.25" filter="url(#pencil)"/>
-        <!-- Supply curve (upward) -->
-        <path class="geo-path" d="M1170,680 Q1300,500 1500,200" stroke="var(--blue)" stroke-width="1.5" fill="none" opacity="0.25" filter="url(#pencil)"/>
-        <!-- Equilibrium dot -->
-        <circle class="geo-path" cx="1335" cy="430" r="5" fill="var(--amber)" opacity="0.4"/>
-        <!-- Dotted lines to axes -->
-        <line class="geo-path" x1="1335" y1="430" x2="1335" y2="700" stroke="var(--warm-gray)" stroke-width="0.6" stroke-dasharray="4,4" opacity="0.15"/>
-        <line class="geo-path" x1="1335" y1="430" x2="1150" y2="430" stroke="var(--warm-gray)" stroke-width="0.6" stroke-dasharray="4,4" opacity="0.15"/>
-      </svg>
-    </div>
-    <svg class="wc-accent" data-paint style="top:80px;right:-20px;width:380px;height:320px;" viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <polygon points="50,40 300,20 370,160 320,290 100,310 15,180" fill="rgba(196, 90, 60, 0.09)" filter="url(#wc)"/>
-      <polygon points="120,80 280,70 330,180 260,270 90,240" fill="rgba(217, 119, 6, 0.06)" filter="url(#wc-sm)"/>
-    </svg>
-    <div class="content reveal">
-      <h2 class="r-child">Experience</h2>
-      <h3 class="r-child">What I've worked on professionally</h3>
-      <div class="timeline">
-        <div class="timeline-item stg">
-          <div class="timeline-meta">2025 — Present</div>
-          <div class="timeline-role">[Job Title]</div>
-          <div class="timeline-org">[Company Name]</div>
-          <p class="timeline-desc">[Describe what you did, the impact you had, and what you learned.]</p>
-        </div>
-        <div class="timeline-item stg">
-          <div class="timeline-meta">2024 — 2025</div>
-          <div class="timeline-role">[Job Title]</div>
-          <div class="timeline-org">[Company Name]</div>
-          <p class="timeline-desc">[Another role. Keep it concise and outcome-focused.]</p>
-        </div>
-        <div class="timeline-item stg">
-          <div class="timeline-meta">Summer 2023</div>
-          <div class="timeline-role">[Internship or Part-time Role]</div>
-          <div class="timeline-org">[Company Name]</div>
-          <p class="timeline-desc">[Describe the work and what you took away from it.]</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  <hr class="rule full">
 
-  <!-- ═══════════════ RESEARCH ═══════════════ -->
-  <section id="research" style="position:relative;">
-    <div class="geo-art" data-draw>
-      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <!-- Normal distribution -->
-        <path class="geo-path" d="M100,700 Q200,695 300,680 T500,550 T650,300 T800,150 T950,300 T1100,550 T1300,680 T1500,700" stroke="var(--purple)" stroke-width="1.8" fill="none" opacity="0.2" filter="url(#pencil)"/>
-        <!-- Mean line -->
-        <line class="geo-path" x1="800" y1="100" x2="800" y2="750" stroke="var(--warm-gray)" stroke-width="0.6" stroke-dasharray="6,4" opacity="0.12"/>
-        <!-- Sigma markers -->
-        <line class="geo-path" x1="550" y1="700" x2="550" y2="710" stroke="var(--warm-gray)" stroke-width="1" opacity="0.15"/>
-        <line class="geo-path" x1="1050" y1="700" x2="1050" y2="710" stroke="var(--warm-gray)" stroke-width="1" opacity="0.15"/>
-        <!-- Shaded area hint -->
-        <path class="geo-path" d="M550,700 Q600,680 650,580 T750,350 T800,150 T850,350 T950,580 T1050,700 Z" stroke="none" fill="rgba(139, 126, 200, 0.04)" filter="url(#wc-sm)"/>
-      </svg>
-    </div>
-    <svg class="wc-accent" data-paint style="bottom:60px;left:-40px;width:320px;height:280px;" viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <polygon points="40,50 250,20 310,140 260,260 80,270 10,160" fill="rgba(91, 155, 213, 0.1)" filter="url(#wc)"/>
-    </svg>
-    <div class="content reveal">
-      <h2 class="r-child">Research</h2>
-      <h3 class="r-child">Questions I've explored</h3>
-      <p class="r-child">[Introduce your research interests broadly. What fields or questions draw you in?]</p>
-      <div class="timeline">
-        <div class="timeline-item stg">
-          <div class="timeline-meta">2025</div>
-          <div class="timeline-role">[Research Project Title]</div>
-          <div class="timeline-org">[Lab or Advisor Name] · [University]</div>
-          <p class="timeline-desc">[Describe the research question, your contribution, and findings.]</p>
-        </div>
-        <div class="timeline-item stg">
-          <div class="timeline-meta">2024</div>
-          <div class="timeline-role">[Another Research Project]</div>
-          <div class="timeline-org">[Lab or Advisor Name] · [University]</div>
-          <p class="timeline-desc">[Focus on what was interesting and what you contributed.]</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════ PROJECTS ═══════════════ -->
-  <section id="projects" style="position:relative;">
-    <div class="geo-art" data-draw>
-      <svg viewBox="0 0 1600 1100" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <!-- Tessellation / hexagonal grid fragment -->
-        <path class="geo-path" d="M1300,200 L1350,230 L1350,290 L1300,320 L1250,290 L1250,230 Z" stroke="var(--amber)" stroke-width="0.8" fill="none" opacity="0.15"/>
-        <path class="geo-path" d="M1400,200 L1450,230 L1450,290 L1400,320 L1350,290 L1350,230 Z" stroke="var(--amber)" stroke-width="0.8" fill="none" opacity="0.12"/>
-        <path class="geo-path" d="M1350,290 L1400,320 L1400,380 L1350,410 L1300,380 L1300,320 Z" stroke="var(--amber)" stroke-width="0.8" fill="none" opacity="0.1"/>
-        <path class="geo-path" d="M1250,290 L1300,320 L1300,380 L1250,410 L1200,380 L1200,320 Z" stroke="var(--amber)" stroke-width="0.8" fill="none" opacity="0.12"/>
-        <!-- Bezier construction -->
-        <path class="geo-path" d="M100,800 C200,400 400,600 600,300" stroke="var(--blue)" stroke-width="1.2" fill="none" opacity="0.18" filter="url(#pencil)"/>
-        <!-- Control points -->
-        <line class="geo-path" x1="100" y1="800" x2="200" y2="400" stroke="var(--blue)" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.1"/>
-        <line class="geo-path" x1="400" y1="600" x2="600" y2="300" stroke="var(--blue)" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.1"/>
-      </svg>
-    </div>
-    <svg class="wc-accent" data-paint style="top:100px;right:-30px;width:360px;height:300px;" viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <polygon points="60,30 310,50 350,170 280,280 80,260 20,130" fill="rgba(217, 119, 6, 0.1)" filter="url(#wc)"/>
-    </svg>
-    <div class="content reveal">
-      <h2 class="r-child">Projects</h2>
-      <h3 class="r-child">Things I've built</h3>
-      <p class="r-child">[What motivates your projects — learning, solving a problem, creative exploration.]</p>
-      <div class="projects-grid">
-        <div class="project-card stg">
-          <div class="project-tag tag-purple">Software</div>
-          <div class="project-title">[Project Name]</div>
-          <p class="project-desc">[What is it, why did you build it, and what's interesting about it?]</p>
-          <a href="#" class="project-link">View project <span class="arrow">&rarr;</span></a>
-        </div>
-        <div class="project-card stg">
-          <div class="project-tag tag-blue">Data</div>
-          <div class="project-title">[Project Name]</div>
-          <p class="project-desc">[Description of another project. Vary the tags to show range.]</p>
-          <a href="#" class="project-link">View project <span class="arrow">&rarr;</span></a>
-        </div>
-        <div class="project-card stg">
-          <div class="project-tag tag-terra">Design</div>
-          <div class="project-title">[Project Name]</div>
-          <p class="project-desc">[One more project. Add or remove cards as needed.]</p>
-          <a href="#" class="project-link">View project <span class="arrow">&rarr;</span></a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════ INTERESTS ═══════════════ -->
-  <section id="interests" style="position:relative;">
-    <div class="geo-art" data-draw>
-      <svg viewBox="0 0 1600 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <!-- Lissajous figure -->
-        <path class="geo-path" d="M200,350 C250,200 350,150 450,250 S550,500 650,350 S750,100 850,250 S950,500 1050,350 S1150,100 1250,250 S1350,500 1450,350" stroke="var(--sage)" stroke-width="1.3" fill="none" opacity="0.18" filter="url(#pencil)"/>
-        <!-- Scattered dots like a scatter plot -->
-        <circle class="geo-path" cx="1300" cy="200" r="3" fill="var(--purple)" opacity="0.2"/>
-        <circle class="geo-path" cx="1340" cy="250" r="2.5" fill="var(--purple)" opacity="0.15"/>
-        <circle class="geo-path" cx="1380" cy="220" r="3" fill="var(--blue)" opacity="0.2"/>
-        <circle class="geo-path" cx="1420" cy="280" r="2" fill="var(--purple)" opacity="0.15"/>
-        <circle class="geo-path" cx="1360" cy="310" r="3.5" fill="var(--blue)" opacity="0.18"/>
-        <circle class="geo-path" cx="1460" cy="240" r="2.5" fill="var(--terracotta)" opacity="0.15"/>
-      </svg>
-    </div>
-    <svg class="wc-accent" data-paint style="top:30px;left:-30px;width:300px;height:260px;" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <polygon points="30,60 200,15 290,100 260,230 80,250 10,150" fill="rgba(122, 155, 87, 0.09)" filter="url(#wc)"/>
-    </svg>
-    <div class="content reveal">
-      <h2 class="r-child">Interests</h2>
-      <h3 class="r-child">Beyond the work</h3>
-      <p class="r-child">[Write about what you do outside of work and school. Hobbies, passions, things you're curious about.]</p>
-      <div class="interests-list">
-        <span class="interest-tag r-child">[Interest 1]</span>
-        <span class="interest-tag r-child">[Interest 2]</span>
-        <span class="interest-tag r-child">[Interest 3]</span>
-        <span class="interest-tag r-child">[Interest 4]</span>
-        <span class="interest-tag r-child">[Interest 5]</span>
-        <span class="interest-tag r-child">[Interest 6]</span>
-        <span class="interest-tag r-child">[Interest 7]</span>
-        <span class="interest-tag r-child">[Interest 8]</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════ CONNECT ═══════════════ -->
-  <section id="connect" style="position:relative;">
-    <div class="geo-art" data-draw>
-      <svg viewBox="0 0 1600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <!-- Network / graph theory nodes -->
-        <circle class="geo-path" cx="1250" cy="200" r="6" fill="var(--purple)" opacity="0.2"/>
-        <circle class="geo-path" cx="1400" cy="300" r="5" fill="var(--blue)" opacity="0.2"/>
-        <circle class="geo-path" cx="1300" cy="400" r="7" fill="var(--terracotta)" opacity="0.2"/>
-        <circle class="geo-path" cx="1450" cy="500" r="5" fill="var(--purple)" opacity="0.15"/>
-        <circle class="geo-path" cx="1200" cy="550" r="6" fill="var(--amber)" opacity="0.2"/>
-        <!-- Edges -->
-        <line class="geo-path" x1="1250" y1="200" x2="1400" y2="300" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.12"/>
-        <line class="geo-path" x1="1400" y1="300" x2="1300" y2="400" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.12"/>
-        <line class="geo-path" x1="1300" y1="400" x2="1450" y2="500" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.12"/>
-        <line class="geo-path" x1="1300" y1="400" x2="1200" y2="550" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.12"/>
-        <line class="geo-path" x1="1250" y1="200" x2="1300" y2="400" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.1"/>
-        <line class="geo-path" x1="1450" y1="500" x2="1200" y2="550" stroke="var(--warm-gray)" stroke-width="0.8" opacity="0.1"/>
-      </svg>
-    </div>
-    <svg class="wc-accent" data-paint style="top:20px;left:-40px;width:340px;height:280px;" viewBox="0 0 340 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <polygon points="40,50 270,20 330,150 280,260 70,270 10,140" fill="rgba(139, 126, 200, 0.09)" filter="url(#wc)"/>
-    </svg>
-    <div class="content reveal">
-      <h2 class="r-child">Connect</h2>
-      <h3 class="r-child">Let's talk</h3>
-      <p class="r-child">I'm always open to interesting conversations, collaborations, or just saying hello.</p>
-      <div class="social-links">
-        <a href="https://github.com/" class="social-link stg" target="_blank" rel="noopener">
-          <div><div class="social-link-name">GitHub</div><div class="social-link-handle">@yourusername</div></div>
-          <span class="social-link-arrow">&rarr;</span>
+  <!-- ═══ SELECTED WORK ═══ -->
+  <section class="sg" id="work">
+    <div class="sg-label"><span class="label">Selected Work</span></div>
+    <div class="sg-content">
+      <div class="work-list">
+        <a class="work-entry" href="#">
+          <div>
+            <div class="work-title">[Project or Role Name]</div>
+            <div class="work-desc">[Organization or context — one line]</div>
+          </div>
+          <div class="work-meta">2025–Present</div>
         </a>
-        <a href="https://linkedin.com/in/" class="social-link stg" target="_blank" rel="noopener">
-          <div><div class="social-link-name">LinkedIn</div><div class="social-link-handle">/in/yourusername</div></div>
-          <span class="social-link-arrow">&rarr;</span>
+        <a class="work-entry" href="#">
+          <div>
+            <div class="work-title">[Project or Role Name]</div>
+            <div class="work-desc">[Organization or context — one line]</div>
+          </div>
+          <div class="work-meta">2024–2025</div>
         </a>
-        <a href="https://x.com/" class="social-link stg" target="_blank" rel="noopener">
-          <div><div class="social-link-name">X (Twitter)</div><div class="social-link-handle">@yourusername</div></div>
-          <span class="social-link-arrow">&rarr;</span>
+        <a class="work-entry" href="#">
+          <div>
+            <div class="work-title">[Project or Role Name]</div>
+            <div class="work-desc">[Organization or context — one line]</div>
+          </div>
+          <div class="work-meta">Summer 2024</div>
         </a>
-        <a href="mailto:your@email.com" class="social-link stg">
-          <div><div class="social-link-name">Email</div><div class="social-link-handle">your@email.com</div></div>
-          <span class="social-link-arrow">&rarr;</span>
+        <a class="work-entry" href="#">
+          <div>
+            <div class="work-title">[Research Paper or Project]</div>
+            <div class="work-desc">[Lab, university, or independent]</div>
+          </div>
+          <div class="work-meta">2024</div>
+        </a>
+        <a class="work-entry" href="#">
+          <div>
+            <div class="work-title">[Side Project]</div>
+            <div class="work-desc">[What it does]</div>
+          </div>
+          <div class="work-meta">Ongoing</div>
         </a>
       </div>
     </div>
   </section>
 
+  <hr class="rule full">
+
+  <!-- ═══ AREAS OF INQUIRY ═══ -->
+  <section class="sg">
+    <div class="sg-label"><span class="label">Areas of Inquiry</span></div>
+    <div class="sg-content">
+      <div class="keyword-grid">
+        <span>[Topic 1]</span>
+        <span>[Topic 2]</span>
+        <span>[Topic 3]</span>
+        <span>[Topic 4]</span>
+        <span>[Topic 5]</span>
+        <span>[Topic 6]</span>
+        <span>[Topic 7]</span>
+        <span>[Topic 8]</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule full">
+
+  <!-- ═══ CORRESPONDENCE ═══ -->
+  <section class="sg" id="correspondence">
+    <div class="sg-label"><span class="label">Correspondence</span></div>
+    <div class="sg-content">
+      <p style="margin-bottom:24px;color:var(--text-2)">Open to substantive conversations, collaboration proposals, and research inquiries.</p>
+      <div class="link-list">
+        <a href="https://github.com/jpzam1106" target="_blank" rel="noopener">
+          <span>GitHub</span>
+          <span class="handle">jpzam1106</span>
+        </a>
+        <a href="https://linkedin.com/in/" target="_blank" rel="noopener">
+          <span>LinkedIn</span>
+          <span class="handle">/in/jpzambrano</span>
+        </a>
+        <a href="https://x.com/" target="_blank" rel="noopener">
+          <span>X</span>
+          <span class="handle">@jpzambrano</span>
+        </a>
+        <a href="mailto:jpzambranobusiness@gmail.com">
+          <span>Email</span>
+          <span class="handle">jpzambranobusiness@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule full">
   <footer>
-    <div class="content">
-      <p>&copy; 2026 JP Zambrano</p>
-      <p>Built with care.</p>
-    </div>
+    <span>&copy; 2026 JP Zambrano</span>
+    <span>All rights reserved.</span>
   </footer>
 
   <script>
-    // Reveal content on scroll
-    const revealObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('vis'); revealObs.unobserve(e.target); }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+    // ── Canvas setup ──
+    function initCanvas(canvas) {
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+      return { ctx, w, h, dpr };
+    }
 
-    // Draw geometric art on scroll
-    const drawObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('drawn'); drawObs.unobserve(e.target); }
-      });
-    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('[data-draw]').forEach(el => drawObs.observe(el));
+    const heroCanvas = document.getElementById('heroCanvas');
+    const tlCanvas = document.getElementById('timelineCanvas');
+    let hero = initCanvas(heroCanvas);
+    let tl = initCanvas(tlCanvas);
 
-    // Paint-in watercolor accents
-    const paintObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('painted'); paintObs.unobserve(e.target); }
-      });
-    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('[data-paint]').forEach(el => paintObs.observe(el));
-
-    // Smooth scroll nav
-    document.querySelectorAll('nav a[href^="#"]').forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const t = document.querySelector(link.getAttribute('href'));
-        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
+    window.addEventListener('resize', () => {
+      hero = initCanvas(heroCanvas);
+      tl = initCanvas(tlCanvas);
     });
 
-    // Auto-hide nav
-    let lastY = 0;
-    const navEl = document.querySelector('nav');
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      navEl.style.transform = (y > lastY && y > 140) ? 'translateY(-100%)' : 'translateY(0)';
-      lastY = y;
-    }, { passive: true });
+    // ── Flowing curves: Hero ──
+    const ACCENT = { r: 217, g: 119, b: 87 };
+    const CHARCOAL = { r: 28, g: 28, b: 26 };
+
+    function noise(x, t, seed) {
+      return Math.sin(x * 1.9 + t + seed) * 0.5
+           + Math.sin(x * 3.7 + t * 0.6 + seed * 2.1) * 0.25
+           + Math.sin(x * 6.1 + t * 0.35 + seed * 0.8) * 0.125;
+    }
+
+    function drawHero(ctx, w, h, t, scroll) {
+      ctx.clearRect(0, 0, w, h);
+      const numCurves = 18;
+
+      for (let i = 0; i < numCurves; i++) {
+        const pct = i / (numCurves - 1);
+        const baseY = h * 0.12 + pct * h * 0.76;
+        const c = i % 4 === 0 ? ACCENT : CHARCOAL;
+        const alpha = i % 4 === 0
+          ? 0.07 + Math.abs(Math.sin(i * 0.9)) * 0.06
+          : 0.03 + Math.abs(Math.sin(i * 1.1)) * 0.04;
+        const lw = i % 4 === 0 ? 1.4 : 0.6 + (i % 3) * 0.3;
+
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(${c.r},${c.g},${c.b},${alpha})`;
+        ctx.lineWidth = lw;
+
+        const freq = 2.5 + i * 0.2;
+        const amp = 16 + i * 2.5 + scroll * 12;
+        const seed = i * 1.4;
+
+        for (let px = 0; px <= w; px += 2) {
+          const x = px / w;
+          const n = noise(x * freq, t * 0.35, seed);
+          const scrollShift = Math.sin(x * Math.PI * 2 + scroll * Math.PI * 3) * scroll * 8;
+          const y = baseY + n * amp + scrollShift;
+          if (px === 0) ctx.moveTo(px, y); else ctx.lineTo(px, y);
+        }
+        ctx.stroke();
+      }
+    }
+
+    // ── Flowing curves: Timeline (scrollytelling) ──
+    let targetStep = -1;
+    let smoothSpread = 0.04;
+    let smoothCount = 2;
+
+    const STEP_CONFIGS = [
+      { spread: 0.06, count: 4 },
+      { spread: 0.18, count: 7 },
+      { spread: 0.32, count: 11 },
+      { spread: 0.50, count: 15 },
+      { spread: 0.72, count: 20 },
+    ];
+
+    function drawTimeline(ctx, w, h, t) {
+      const cfg = STEP_CONFIGS[Math.max(0, Math.min(targetStep, 4))] || STEP_CONFIGS[0];
+      smoothSpread += (cfg.spread - smoothSpread) * 0.04;
+      smoothCount += (cfg.count - smoothCount) * 0.04;
+
+      ctx.clearRect(0, 0, w, h);
+      const centerY = h * 0.5;
+      const originX = w * 0.06;
+      const count = Math.round(smoothCount);
+
+      for (let i = 0; i < count; i++) {
+        const norm = count <= 1 ? 0 : (i / (count - 1)) * 2 - 1;
+        const endY = centerY + norm * h * smoothSpread;
+        const isAccent = i % 3 === 0;
+        const c = isAccent ? ACCENT : CHARCOAL;
+        const alpha = isAccent
+          ? 0.12 + (1 - Math.abs(norm)) * 0.08
+          : 0.05 + (1 - Math.abs(norm)) * 0.04;
+
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(${c.r},${c.g},${c.b},${alpha})`;
+        ctx.lineWidth = isAccent ? 1.4 : 0.8;
+
+        for (let px = 0; px <= w; px += 2) {
+          const progress = px / w;
+          const targetY = centerY + (endY - centerY) * Math.pow(progress, 0.7);
+          const wave = Math.sin(progress * Math.PI * (2.5 + i * 0.25) + t * 0.3 + i * 0.6)
+                     * (8 + progress * 18 * smoothSpread);
+          const y = targetY + wave;
+          if (px === 0) ctx.moveTo(px, y); else ctx.lineTo(px, y);
+        }
+        ctx.stroke();
+      }
+
+      // Origin mark
+      ctx.beginPath();
+      ctx.arc(originX, centerY, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${CHARCOAL.r},${CHARCOAL.g},${CHARCOAL.b},0.25)`;
+      ctx.fill();
+    }
+
+    // ── Scroll handling ──
+    const beats = document.querySelectorAll('.beat');
+    let activeStep = -1;
+
+    function absTop(el) {
+      let top = 0;
+      while (el) { top += el.offsetTop; el = el.offsetParent; }
+      return top;
+    }
+
+    function onScroll() {
+      const maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
+      document.getElementById('progressFill').style.width =
+        (window.scrollY / maxScroll) * 100 + '%';
+
+      const center = window.scrollY + window.innerHeight * 0.45;
+      let step = -1;
+      beats.forEach(b => {
+        const top = absTop(b);
+        if (center >= top && center < top + b.offsetHeight) {
+          step = parseInt(b.dataset.step);
+        }
+      });
+
+      if (step !== activeStep) {
+        activeStep = step;
+        targetStep = step;
+        beats.forEach(b => {
+          b.classList.toggle('active', parseInt(b.dataset.step) === step);
+        });
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // ── Animation loop ──
+    let time = 0;
+    function animate() {
+      time += 0.005;
+      const scroll = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
+      drawHero(hero.ctx, hero.w, hero.h, time, scroll);
+      drawTimeline(tl.ctx, tl.w, tl.h, time);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // ── Nav smooth scroll ──
+    document.querySelectorAll('nav a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector(a.getAttribute('href'))
+          ?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
   </script>
 
 </body>
