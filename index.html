@@ -16,16 +16,20 @@
       --text: #141413;
       --text-secondary: #4a4a47;
       --text-tertiary: #87867f;
-      --terracotta: #C67B5C;
+      --terracotta: #C45A3C;
       --terracotta-deep: #9A3412;
       --terracotta-light: #E8C4B0;
-      --terracotta-wash: rgba(198, 123, 92, 0.08);
       --amber: #D97706;
-      --amber-light: #FDE68A;
-      --sage: #6B7B3C;
-      --sage-light: rgba(107, 123, 60, 0.08);
+      --amber-bright: #F59E0B;
+      --purple: #8B7EC8;
+      --purple-deep: #6C5BAE;
+      --purple-light: rgba(139, 126, 200, 0.18);
+      --blue: #5B9BD5;
+      --blue-deep: #3B82C4;
+      --blue-light: rgba(91, 155, 213, 0.15);
+      --sage: #7A9B57;
+      --sage-deep: #5A7B3C;
       --warm-gray: #87867f;
-      --warm-gray-light: rgba(135, 134, 127, 0.12);
       --clay: #B5651D;
       --sand: #D4C4A8;
       --cream: #F5F0E1;
@@ -38,8 +42,7 @@
 
     body {
       font-family: var(--serif);
-      font-size: 18px;
-      line-height: 1.7;
+      font-size: 18px; line-height: 1.7;
       color: var(--text);
       background-color: var(--bg);
       -webkit-font-smoothing: antialiased;
@@ -53,6 +56,7 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
       }
+      .wc-blob, .wc-divider, .paint-stroke { opacity: 1 !important; transform: none !important; }
     }
 
     .svg-filters { position: absolute; width: 0; height: 0; overflow: hidden; }
@@ -77,8 +81,7 @@
     .nav-links a {
       font-family: var(--sans); font-size: 14px; font-weight: 400;
       color: var(--text-tertiary); text-decoration: none;
-      transition: color 0.25s;
-      position: relative;
+      transition: color 0.25s; position: relative;
     }
     .nav-links a::after {
       content: ''; position: absolute; bottom: -4px; left: 0;
@@ -95,7 +98,7 @@
     /* ═══════════ TYPOGRAPHY ═══════════ */
     h1 {
       font-family: var(--serif);
-      font-size: clamp(40px, 6vw, 64px);
+      font-size: clamp(42px, 6vw, 68px);
       font-weight: 300; line-height: 1.08;
       letter-spacing: -0.03em;
     }
@@ -111,7 +114,7 @@
     }
     h3 {
       font-family: var(--serif);
-      font-size: clamp(28px, 3.5vw, 38px);
+      font-size: clamp(28px, 3.5vw, 40px);
       font-weight: 400; line-height: 1.2;
       letter-spacing: -0.02em; margin-bottom: 28px;
     }
@@ -125,12 +128,10 @@
     }
     a:hover { text-decoration-color: var(--terracotta); }
 
-    /* Drop cap on first paragraph of about */
     .drop-cap::first-letter {
       float: left; font-size: 3.8em; line-height: 0.8;
       font-weight: 400; margin-right: 8px; margin-top: 6px;
-      color: var(--terracotta);
-      font-family: var(--serif);
+      color: var(--terracotta); font-family: var(--serif);
     }
 
     /* ═══════════ HERO ═══════════ */
@@ -152,20 +153,26 @@
       animation: heroLinesIn 2s cubic-bezier(0.33, 1, 0.68, 1) 0.3s forwards;
     }
 
-    .watercolor-wash {
-      position: absolute; pointer-events: none; z-index: 1; opacity: 0;
+    /* Hero watercolor washes — MUCH more saturated */
+    .wc-hero {
+      position: absolute; pointer-events: none; z-index: 1;
+      opacity: 0;
     }
-    .wash-1 {
-      top: 5%; right: -10%; width: 700px; height: 600px;
-      animation: washIn 2.5s cubic-bezier(0.33, 1, 0.68, 1) 0.6s forwards;
+    .wc-hero-1 {
+      top: -5%; right: -8%; width: 800px; height: 700px;
+      animation: paintBlob 2.5s cubic-bezier(0.33, 1, 0.68, 1) 0.4s forwards;
     }
-    .wash-2 {
-      bottom: -5%; left: -12%; width: 600px; height: 500px;
-      animation: washIn 2.5s cubic-bezier(0.33, 1, 0.68, 1) 1s forwards;
+    .wc-hero-2 {
+      bottom: -10%; left: -15%; width: 700px; height: 600px;
+      animation: paintBlob 2.5s cubic-bezier(0.33, 1, 0.68, 1) 0.8s forwards;
     }
-    .wash-3 {
-      top: 30%; left: 20%; width: 400px; height: 350px;
-      animation: washIn 2.5s cubic-bezier(0.33, 1, 0.68, 1) 1.4s forwards;
+    .wc-hero-3 {
+      top: 15%; left: 10%; width: 500px; height: 450px;
+      animation: paintBlob 2.5s cubic-bezier(0.33, 1, 0.68, 1) 1.2s forwards;
+    }
+    .wc-hero-4 {
+      bottom: 20%; right: 15%; width: 350px; height: 300px;
+      animation: paintBlob 2.5s cubic-bezier(0.33, 1, 0.68, 1) 1.5s forwards;
     }
 
     .hero-label {
@@ -201,85 +208,98 @@
       animation: pulse 2s ease-in-out 2s infinite;
     }
 
-    /* ═══════════ SECTION WASHES ═══════════ */
-    .section-wash {
+    /* ═══════════ WATERCOLOR BLOB SYSTEM ═══════════ */
+    .wc-blob {
       position: absolute; pointer-events: none; z-index: 0;
+      opacity: 0; transform: scale(0.4) rotate(-8deg);
+      transition: opacity 1.8s cubic-bezier(0.33, 1, 0.68, 1),
+                  transform 2s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+    .wc-blob.painted {
+      opacity: 1; transform: scale(1) rotate(0deg);
     }
 
-    /* Colored section backgrounds */
-    .section-warm {
-      background: linear-gradient(180deg, var(--cream) 0%, var(--bg) 100%);
+    /* Watercolor divider between sections */
+    .wc-divider {
+      position: relative; height: 180px; overflow: hidden;
+      pointer-events: none; z-index: 1;
     }
-    .section-sage {
-      background: linear-gradient(180deg,
-        rgba(107, 123, 60, 0.04) 0%,
-        rgba(107, 123, 60, 0.02) 50%,
-        var(--bg) 100%
-      );
+    .wc-divider svg {
+      position: absolute; width: 100%; height: 100%;
     }
-    .section-terra {
-      background: linear-gradient(180deg,
-        rgba(198, 123, 92, 0.05) 0%,
-        rgba(198, 123, 92, 0.02) 50%,
-        var(--bg) 100%
-      );
+    .wc-divider .stroke-path {
+      stroke-dasharray: 2000;
+      stroke-dashoffset: 2000;
+      transition: stroke-dashoffset 2.5s cubic-bezier(0.33, 1, 0.68, 1);
     }
-    .section-sand {
-      background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
+    .wc-divider.painted .stroke-path {
+      stroke-dashoffset: 0;
+    }
+
+    /* Paint-in section backgrounds */
+    .paint-bg {
+      position: absolute; inset: 0; z-index: 0;
+      opacity: 0; transform: scale(0.92);
+      transition: opacity 1.5s cubic-bezier(0.33, 1, 0.68, 1) 0.1s,
+                  transform 2s cubic-bezier(0.33, 1, 0.68, 1) 0.1s;
+    }
+    .paint-bg.painted {
+      opacity: 1; transform: scale(1);
     }
 
     /* ═══════════ REVEAL SYSTEM ═══════════ */
     .reveal {
-      opacity: 0; transform: translateY(40px);
+      opacity: 0; transform: translateY(48px);
       transition: none;
     }
     .reveal.vis {
-      animation: revealUp 0.9s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+      animation: revealUp 1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
     }
     .r-child {
-      opacity: 0; transform: translateY(28px);
+      opacity: 0; transform: translateY(30px);
     }
     .reveal.vis .r-child {
-      animation: revealUp 0.75s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+      animation: revealUp 0.8s cubic-bezier(0.33, 1, 0.68, 1) forwards;
     }
-    .reveal.vis .r-child:nth-child(1) { animation-delay: 0.05s; }
-    .reveal.vis .r-child:nth-child(2) { animation-delay: 0.12s; }
-    .reveal.vis .r-child:nth-child(3) { animation-delay: 0.19s; }
-    .reveal.vis .r-child:nth-child(4) { animation-delay: 0.26s; }
-    .reveal.vis .r-child:nth-child(5) { animation-delay: 0.33s; }
-    .reveal.vis .r-child:nth-child(6) { animation-delay: 0.40s; }
-    .reveal.vis .r-child:nth-child(7) { animation-delay: 0.47s; }
-    .reveal.vis .r-child:nth-child(8) { animation-delay: 0.54s; }
-    .reveal.vis .r-child:nth-child(9) { animation-delay: 0.61s; }
-    .reveal.vis .r-child:nth-child(10) { animation-delay: 0.68s; }
+    .reveal.vis .r-child:nth-child(1) { animation-delay: 0.08s; }
+    .reveal.vis .r-child:nth-child(2) { animation-delay: 0.16s; }
+    .reveal.vis .r-child:nth-child(3) { animation-delay: 0.24s; }
+    .reveal.vis .r-child:nth-child(4) { animation-delay: 0.32s; }
+    .reveal.vis .r-child:nth-child(5) { animation-delay: 0.40s; }
+    .reveal.vis .r-child:nth-child(6) { animation-delay: 0.48s; }
+    .reveal.vis .r-child:nth-child(7) { animation-delay: 0.56s; }
+    .reveal.vis .r-child:nth-child(8) { animation-delay: 0.64s; }
+    .reveal.vis .r-child:nth-child(9) { animation-delay: 0.72s; }
+    .reveal.vis .r-child:nth-child(10) { animation-delay: 0.80s; }
 
     .stg {
-      opacity: 0; transform: translateY(24px);
+      opacity: 0; transform: translateY(28px);
     }
     .reveal.vis .stg {
-      animation: revealUp 0.7s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+      animation: revealUp 0.75s cubic-bezier(0.33, 1, 0.68, 1) forwards;
     }
-    .reveal.vis .stg:nth-child(1) { animation-delay: 0.15s; }
-    .reveal.vis .stg:nth-child(2) { animation-delay: 0.28s; }
-    .reveal.vis .stg:nth-child(3) { animation-delay: 0.41s; }
-    .reveal.vis .stg:nth-child(4) { animation-delay: 0.54s; }
+    .reveal.vis .stg:nth-child(1) { animation-delay: 0.2s; }
+    .reveal.vis .stg:nth-child(2) { animation-delay: 0.35s; }
+    .reveal.vis .stg:nth-child(3) { animation-delay: 0.5s; }
+    .reveal.vis .stg:nth-child(4) { animation-delay: 0.65s; }
 
     /* ═══════════ KEYFRAMES ═══════════ */
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(36px); }
+      from { opacity: 0; transform: translateY(40px); }
       to { opacity: 1; transform: translateY(0); }
     }
     @keyframes revealUp {
-      from { opacity: 0; transform: translateY(40px); }
+      from { opacity: 0; transform: translateY(48px); }
       to { opacity: 1; transform: translateY(0); }
     }
     @keyframes heroLinesIn {
       from { opacity: 0; }
-      to { opacity: 0.28; }
+      to { opacity: 0.35; }
     }
-    @keyframes washIn {
-      from { opacity: 0; transform: scale(0.85) rotate(-2deg); }
-      to { opacity: 1; transform: scale(1) rotate(0deg); }
+    @keyframes paintBlob {
+      0% { opacity: 0; transform: scale(0.3) rotate(-12deg); filter: blur(8px); }
+      60% { opacity: 0.9; transform: scale(1.05) rotate(1deg); filter: blur(0); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); filter: blur(0); }
     }
     @keyframes lineGrow {
       from { transform: scaleX(0); }
@@ -289,13 +309,13 @@
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.4; transform: scale(0.7); }
     }
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-12px) rotate(1deg); }
-    }
     @keyframes drawStroke {
-      from { stroke-dashoffset: 1000; }
+      from { stroke-dashoffset: 2000; }
       to { stroke-dashoffset: 0; }
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(1.5deg); }
     }
 
     /* ═══════════ PULL QUOTE ═══════════ */
@@ -303,28 +323,27 @@
       font-family: var(--serif); font-style: italic;
       font-size: clamp(22px, 3vw, 30px);
       font-weight: 300; line-height: 1.5; color: var(--text);
-      padding: 40px 0 40px 32px; margin: 56px 0;
+      padding: 40px 0 40px 36px; margin: 56px 0;
       position: relative;
     }
     .pull-quote::before {
       content: ''; position: absolute; left: 0; top: 0;
-      width: 3px; height: 100%;
-      background: linear-gradient(180deg, var(--terracotta), var(--amber), var(--sage));
+      width: 4px; height: 100%;
+      background: linear-gradient(180deg, var(--terracotta), var(--purple), var(--blue));
       border-radius: 2px;
     }
     .pull-quote::after {
-      content: '\201C'; position: absolute; top: 20px; left: 40px;
-      font-size: 80px; font-style: normal; line-height: 1;
-      color: var(--terracotta-light); opacity: 0.4;
-      font-family: var(--serif);
+      content: '\201C'; position: absolute; top: 16px; left: 44px;
+      font-size: 90px; font-style: normal; line-height: 1;
+      color: var(--purple-light); font-family: var(--serif);
     }
 
     /* ═══════════ TIMELINE ═══════════ */
     .timeline { margin-top: 48px; position: relative; padding-left: 28px; }
     .timeline::before {
       content: ''; position: absolute; left: 4px; top: 0; bottom: 0;
-      width: 1.5px;
-      background: linear-gradient(180deg, var(--terracotta-light), var(--border));
+      width: 2px;
+      background: linear-gradient(180deg, var(--purple), var(--blue), var(--terracotta-light));
     }
     .timeline-item {
       padding: 28px 0 36px; position: relative;
@@ -334,12 +353,12 @@
     }
     .timeline-item::before {
       content: ''; position: absolute; left: -28px; top: 36px;
-      width: 10px; height: 10px; border-radius: 50%;
-      background: var(--bg); border: 2px solid var(--terracotta);
+      width: 11px; height: 11px; border-radius: 50%;
+      background: var(--bg); border: 2.5px solid var(--purple);
       z-index: 1;
     }
     .timeline-item:first-child::before {
-      background: var(--terracotta);
+      background: var(--purple); border-color: var(--purple);
     }
     .timeline-meta {
       font-family: var(--sans); font-size: 12px; font-weight: 600;
@@ -367,20 +386,20 @@
       position: relative; overflow: hidden;
     }
     .project-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--terracotta), var(--amber));
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--purple), var(--blue), var(--terracotta));
       transform: scaleX(0); transform-origin: left;
       transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
     }
     .project-card::after {
       content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, var(--terracotta-wash), transparent);
-      opacity: 0; transition: opacity 0.4s;
+      background: linear-gradient(135deg, var(--purple-light), var(--blue-light), transparent);
+      opacity: 0; transition: opacity 0.5s;
     }
     .project-card:hover {
-      border-color: var(--terracotta-light);
-      box-shadow: 0 12px 40px rgba(154, 52, 18, 0.08);
-      transform: translateY(-4px);
+      border-color: var(--purple);
+      box-shadow: 0 16px 48px rgba(108, 91, 174, 0.12);
+      transform: translateY(-6px);
     }
     .project-card:hover::before { transform: scaleX(1); }
     .project-card:hover::after { opacity: 1; }
@@ -388,10 +407,13 @@
     .project-tag {
       font-family: var(--sans); font-size: 11px; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--bg); background: var(--terracotta);
-      padding: 4px 10px; border-radius: 2px;
+      padding: 4px 12px; border-radius: 2px;
       display: inline-block; margin-bottom: 16px;
     }
+    .project-tag.tag-purple { color: #fff; background: var(--purple); }
+    .project-tag.tag-blue { color: #fff; background: var(--blue-deep); }
+    .project-tag.tag-terra { color: #fff; background: var(--terracotta); }
+    .project-tag.tag-amber { color: #fff; background: var(--amber); }
     .project-title {
       font-family: var(--serif); font-size: 24px; font-weight: 400;
       margin-bottom: 14px; line-height: 1.3;
@@ -402,7 +424,7 @@
     .project-link {
       font-family: var(--sans); font-size: 13px; font-weight: 600;
       display: inline-flex; align-items: center; gap: 8px;
-      color: var(--terracotta);
+      color: var(--purple-deep); text-decoration: none;
     }
     .project-link .arrow {
       transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
@@ -418,15 +440,17 @@
       transition: all 0.35s cubic-bezier(0.33, 1, 0.68, 1);
       cursor: default; position: relative; overflow: hidden;
     }
+    .interest-tag:nth-child(odd) { --tag-color: var(--purple); --tag-bg: var(--purple-light); }
+    .interest-tag:nth-child(even) { --tag-color: var(--blue-deep); --tag-bg: var(--blue-light); }
     .interest-tag::before {
       content: ''; position: absolute; inset: 0;
-      background: var(--terracotta-wash); opacity: 0;
+      background: var(--tag-bg); opacity: 0;
       transition: opacity 0.35s;
     }
     .interest-tag:hover {
-      border-color: var(--terracotta); color: var(--terracotta-deep);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(198, 123, 92, 0.12);
+      border-color: var(--tag-color); color: var(--tag-color);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(108, 91, 174, 0.15);
     }
     .interest-tag:hover::before { opacity: 1; }
 
@@ -441,7 +465,7 @@
     .social-link:first-child { border-top: 1px solid var(--border); }
     .social-link:hover {
       padding-left: 16px;
-      background: linear-gradient(90deg, var(--terracotta-wash), transparent);
+      background: linear-gradient(90deg, var(--purple-light), transparent);
     }
     .social-link-name {
       font-family: var(--sans); font-size: 17px; font-weight: 600; color: var(--text);
@@ -454,7 +478,7 @@
       transition: all 0.35s cubic-bezier(0.33, 1, 0.68, 1);
     }
     .social-link:hover .social-link-arrow {
-      transform: translateX(8px); color: var(--terracotta);
+      transform: translateX(8px); color: var(--purple-deep);
     }
 
     /* ═══════════ FOOTER ═══════════ */
@@ -467,15 +491,6 @@
     }
     footer p { font-family: var(--sans); font-size: 13px; color: var(--text-tertiary); }
 
-    /* ═══════════ SECTION DECORATIVE LINES ═══════════ */
-    .deco-lines {
-      position: absolute; inset: 0; pointer-events: none; z-index: 0;
-      overflow: hidden;
-    }
-    .deco-lines svg {
-      position: absolute; width: 100%; height: 100%;
-    }
-
     /* ═══════════ RESPONSIVE ═══════════ */
     @media (max-width: 768px) {
       section { padding: 96px 24px; }
@@ -484,8 +499,9 @@
       .nav-links a { font-size: 13px; }
       .hero { min-height: auto; padding-top: 120px; padding-bottom: 96px; }
       .hero-graphic svg { width: 250%; }
-      .watercolor-wash { display: none; }
-      .section-wash { display: none; }
+      .wc-hero { transform: scale(0.6); }
+      .wc-blob { transform: scale(0.5) !important; }
+      .wc-divider { height: 100px; }
       .timeline { padding-left: 24px; }
       .timeline-item::before { left: -24px; }
       footer .content { flex-direction: column; gap: 8px; text-align: center; }
@@ -504,23 +520,28 @@
   <svg class="svg-filters" aria-hidden="true">
     <defs>
       <filter id="wc" x="-30%" y="-30%" width="160%" height="160%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="5" seed="2" result="n"/>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="30" xChannelSelector="R" yChannelSelector="G" result="d"/>
-        <feGaussianBlur in="d" stdDeviation="6"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="5" seed="2" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="35" xChannelSelector="R" yChannelSelector="G" result="d"/>
+        <feGaussianBlur in="d" stdDeviation="5"/>
+      </filter>
+      <filter id="wc-lg" x="-40%" y="-40%" width="180%" height="180%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="6" seed="7" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="45" xChannelSelector="R" yChannelSelector="G" result="d"/>
+        <feGaussianBlur in="d" stdDeviation="8"/>
       </filter>
       <filter id="wc-sm" x="-20%" y="-20%" width="140%" height="140%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="4" seed="5" result="n"/>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G" result="d"/>
-        <feGaussianBlur in="d" stdDeviation="4"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="4" seed="5" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="20" xChannelSelector="R" yChannelSelector="G" result="d"/>
+        <feGaussianBlur in="d" stdDeviation="3"/>
       </filter>
       <filter id="pencil" x="-5%" y="-40%" width="110%" height="180%">
         <feTurbulence type="fractalNoise" baseFrequency="0.6 0.015" numOctaves="3" seed="1" result="n"/>
         <feDisplacementMap in="SourceGraphic" in2="n" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
       </filter>
-      <filter id="grain">
-        <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="1" stitchTiles="stitch"/>
-        <feColorMatrix type="saturate" values="0"/>
-        <feBlend in="SourceGraphic" mode="multiply"/>
+      <filter id="wc-edge" x="-25%" y="-25%" width="150%" height="150%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" seed="3" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="25" xChannelSelector="R" yChannelSelector="G" result="d"/>
+        <feGaussianBlur in="d" stdDeviation="2"/>
       </filter>
     </defs>
   </svg>
@@ -543,45 +564,51 @@
     <div class="hero-graphic">
       <svg viewBox="0 0 1600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
         <g filter="url(#pencil)">
-          <path d="M0,60 Q400,55 800,50 T1600,30" stroke="#C67B5C" stroke-width="1.3" fill="none" opacity="0.25"/>
-          <path d="M0,90 Q400,88 800,85 T1600,70" stroke="#87867f" stroke-width="1.1" fill="none" opacity="0.3"/>
-          <path d="M0,120 Q400,118 800,125 T1600,115" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.25"/>
-          <path d="M0,150 Q400,152 800,160 T1600,180" stroke="#D4C4A8" stroke-width="1.2" fill="none" opacity="0.35"/>
-          <path d="M0,180 Q400,178 800,190 T1600,230" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
-          <path d="M0,210 Q400,215 800,230 T1600,290" stroke="#C67B5C" stroke-width="1.1" fill="none" opacity="0.2"/>
-          <path d="M0,240 Q400,238 800,245 T1600,260" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.25"/>
-          <path d="M0,270 Q400,275 800,290 T1600,350" stroke="#6B7B3C" stroke-width="1.2" fill="none" opacity="0.15"/>
-          <path d="M0,300 Q400,298 800,305 T1600,310" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
-          <path d="M0,330 Q400,335 800,350 T1600,410" stroke="#D97706" stroke-width="1.1" fill="none" opacity="0.15"/>
-          <path d="M0,360 Q400,358 800,365 T1600,370" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.25"/>
-          <path d="M0,390 Q400,395 800,410 T1600,470" stroke="#C67B5C" stroke-width="1.2" fill="none" opacity="0.2"/>
-          <path d="M0,420 Q400,418 800,425 T1600,430" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
-          <path d="M0,450 Q400,455 800,470 T1600,540" stroke="#87867f" stroke-width="1.1" fill="none" opacity="0.25"/>
-          <path d="M0,480 Q400,478 800,485 T1600,490" stroke="#D4C4A8" stroke-width="1.0" fill="none" opacity="0.3"/>
-          <path d="M0,510 Q400,515 800,530 T1600,600" stroke="#6B7B3C" stroke-width="1.2" fill="none" opacity="0.12"/>
-          <path d="M0,540 Q400,538 800,545 T1600,550" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
-          <path d="M0,570 Q400,575 800,590 T1600,660" stroke="#C67B5C" stroke-width="1.1" fill="none" opacity="0.18"/>
-          <path d="M0,600 Q400,598 800,605 T1600,610" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.25"/>
-          <path d="M0,630 Q400,635 800,650 T1600,720" stroke="#D97706" stroke-width="1.2" fill="none" opacity="0.12"/>
-          <path d="M0,660 Q400,658 800,665 T1600,670" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
-          <path d="M0,690 Q400,695 800,710 T1600,770" stroke="#87867f" stroke-width="1.1" fill="none" opacity="0.25"/>
-          <path d="M0,720 Q400,718 800,725 T1600,730" stroke="#D4C4A8" stroke-width="1.0" fill="none" opacity="0.3"/>
-          <path d="M0,750 Q400,755 800,770 T1600,790" stroke="#C67B5C" stroke-width="1.2" fill="none" opacity="0.15"/>
+          <path d="M0,50 Q400,45 800,40 T1600,20" stroke="#8B7EC8" stroke-width="1.4" fill="none" opacity="0.3"/>
+          <path d="M0,80 Q400,78 800,75 T1600,60" stroke="#5B9BD5" stroke-width="1.2" fill="none" opacity="0.3"/>
+          <path d="M0,110 Q400,112 800,120 T1600,110" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
+          <path d="M0,140 Q400,142 800,155 T1600,180" stroke="#C45A3C" stroke-width="1.3" fill="none" opacity="0.25"/>
+          <path d="M0,170 Q400,168 800,175 T1600,200" stroke="#8B7EC8" stroke-width="1.1" fill="none" opacity="0.2"/>
+          <path d="M0,200 Q400,205 800,220 T1600,280" stroke="#D97706" stroke-width="1.2" fill="none" opacity="0.2"/>
+          <path d="M0,230 Q400,228 800,235 T1600,240" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.25"/>
+          <path d="M0,260 Q400,265 800,285 T1600,350" stroke="#5B9BD5" stroke-width="1.3" fill="none" opacity="0.2"/>
+          <path d="M0,290 Q400,288 800,295 T1600,300" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
+          <path d="M0,320 Q400,325 800,345 T1600,410" stroke="#8B7EC8" stroke-width="1.2" fill="none" opacity="0.18"/>
+          <path d="M0,350 Q400,348 800,355 T1600,360" stroke="#D4C4A8" stroke-width="1.0" fill="none" opacity="0.3"/>
+          <path d="M0,380 Q400,385 800,400 T1600,470" stroke="#C45A3C" stroke-width="1.3" fill="none" opacity="0.2"/>
+          <path d="M0,410 Q400,408 800,415 T1600,420" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
+          <path d="M0,440 Q400,445 800,460 T1600,540" stroke="#7A9B57" stroke-width="1.2" fill="none" opacity="0.15"/>
+          <path d="M0,470 Q400,468 800,475 T1600,480" stroke="#5B9BD5" stroke-width="1.0" fill="none" opacity="0.25"/>
+          <path d="M0,500 Q400,505 800,520 T1600,600" stroke="#8B7EC8" stroke-width="1.2" fill="none" opacity="0.18"/>
+          <path d="M0,530 Q400,528 800,535 T1600,540" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
+          <path d="M0,560 Q400,565 800,580 T1600,660" stroke="#D97706" stroke-width="1.1" fill="none" opacity="0.15"/>
+          <path d="M0,590 Q400,588 800,595 T1600,600" stroke="#D4C4A8" stroke-width="1.0" fill="none" opacity="0.25"/>
+          <path d="M0,620 Q400,625 800,640 T1600,720" stroke="#C45A3C" stroke-width="1.2" fill="none" opacity="0.18"/>
+          <path d="M0,650 Q400,648 800,655 T1600,660" stroke="#8B7EC8" stroke-width="1.0" fill="none" opacity="0.22"/>
+          <path d="M0,680 Q400,685 800,700 T1600,770" stroke="#5B9BD5" stroke-width="1.1" fill="none" opacity="0.18"/>
+          <path d="M0,710 Q400,708 800,715 T1600,720" stroke="#87867f" stroke-width="1.0" fill="none" opacity="0.2"/>
+          <path d="M0,740 Q400,745 800,760 T1600,790" stroke="#7A9B57" stroke-width="1.2" fill="none" opacity="0.15"/>
         </g>
       </svg>
     </div>
 
-    <!-- Watercolor washes — terracotta, sage, amber -->
-    <svg class="watercolor-wash wash-1" viewBox="0 0 700 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="350" cy="300" rx="300" ry="240" fill="rgba(198, 123, 92, 0.09)" filter="url(#wc)"/>
-      <ellipse cx="380" cy="260" rx="200" ry="160" fill="rgba(217, 119, 6, 0.05)" filter="url(#wc)"/>
+    <!-- Hero watercolor washes — vivid purples, blues, terracotta, amber -->
+    <svg class="wc-hero wc-hero-1" viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="400" cy="350" rx="340" ry="280" fill="rgba(139, 126, 200, 0.16)" filter="url(#wc-lg)"/>
+      <ellipse cx="450" cy="300" rx="220" ry="180" fill="rgba(91, 155, 213, 0.12)" filter="url(#wc)"/>
+      <ellipse cx="350" cy="400" rx="160" ry="120" fill="rgba(196, 90, 60, 0.08)" filter="url(#wc)"/>
     </svg>
-    <svg class="watercolor-wash wash-2" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="300" cy="250" rx="250" ry="200" fill="rgba(107, 123, 60, 0.07)" filter="url(#wc)"/>
-      <ellipse cx="250" cy="280" rx="180" ry="140" fill="rgba(135, 134, 127, 0.06)" filter="url(#wc)"/>
+    <svg class="wc-hero wc-hero-2" viewBox="0 0 700 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="350" cy="300" rx="280" ry="230" fill="rgba(196, 90, 60, 0.14)" filter="url(#wc-lg)"/>
+      <ellipse cx="300" cy="350" rx="200" ry="160" fill="rgba(217, 119, 6, 0.1)" filter="url(#wc)"/>
+      <ellipse cx="400" cy="250" rx="150" ry="110" fill="rgba(139, 126, 200, 0.07)" filter="url(#wc)"/>
     </svg>
-    <svg class="watercolor-wash wash-3" viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="200" cy="175" rx="160" ry="120" fill="rgba(212, 196, 168, 0.1)" filter="url(#wc)"/>
+    <svg class="wc-hero wc-hero-3" viewBox="0 0 500 450" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="250" cy="225" rx="200" ry="160" fill="rgba(91, 155, 213, 0.12)" filter="url(#wc)"/>
+      <ellipse cx="200" cy="260" rx="140" ry="100" fill="rgba(122, 155, 87, 0.08)" filter="url(#wc)"/>
+    </svg>
+    <svg class="wc-hero wc-hero-4" viewBox="0 0 350 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="175" cy="150" rx="140" ry="110" fill="rgba(217, 119, 6, 0.13)" filter="url(#wc)"/>
     </svg>
 
     <div class="content">
@@ -599,10 +626,26 @@
     </div>
   </section>
 
+  <!-- ═══════ DIVIDER: Hero → About ═══════ -->
+  <div class="wc-divider" data-paint>
+    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="300" cy="90" rx="350" ry="70" fill="rgba(139, 126, 200, 0.12)" filter="url(#wc-edge)"/>
+      <ellipse cx="900" cy="100" rx="400" ry="60" fill="rgba(91, 155, 213, 0.1)" filter="url(#wc-edge)"/>
+      <ellipse cx="1400" cy="80" rx="280" ry="55" fill="rgba(196, 90, 60, 0.09)" filter="url(#wc-edge)"/>
+      <path class="stroke-path" d="M0,90 C200,60 400,120 600,85 S1000,110 1200,75 S1500,95 1600,80" stroke="#8B7EC8" stroke-width="1.5" fill="none" filter="url(#pencil)" opacity="0.4"/>
+      <path class="stroke-path" d="M0,110 C300,95 500,130 800,100 S1100,125 1400,95 1600,105" stroke="#5B9BD5" stroke-width="1.2" fill="none" filter="url(#pencil)" opacity="0.3"/>
+    </svg>
+  </div>
+
   <!-- ═══════════════ ABOUT ═══════════════ -->
-  <section id="about" class="section-warm" style="position:relative;">
-    <svg class="section-wash" style="top:-60px;right:-80px;width:600px;height:500px;" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="400" cy="200" rx="220" ry="160" fill="rgba(198, 123, 92, 0.06)" filter="url(#wc-sm)"/>
+  <section id="about" style="position:relative;">
+    <!-- Paint-in background -->
+    <svg class="paint-bg" data-paint viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="1600" height="900" fill="rgba(139, 126, 200, 0.04)"/>
+      <ellipse cx="1200" cy="200" rx="400" ry="300" fill="rgba(139, 126, 200, 0.1)" filter="url(#wc-lg)"/>
+      <ellipse cx="1300" cy="250" rx="250" ry="180" fill="rgba(91, 155, 213, 0.08)" filter="url(#wc)"/>
+      <ellipse cx="200" cy="600" rx="350" ry="250" fill="rgba(196, 90, 60, 0.07)" filter="url(#wc-lg)"/>
+      <ellipse cx="300" cy="650" rx="200" ry="150" fill="rgba(217, 119, 6, 0.06)" filter="url(#wc)"/>
     </svg>
     <div class="content reveal">
       <h2 class="r-child">Background</h2>
@@ -621,10 +664,23 @@
     </div>
   </section>
 
+  <!-- ═══════ DIVIDER: About → Education ═══════ -->
+  <div class="wc-divider" data-paint>
+    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="500" cy="90" rx="380" ry="65" fill="rgba(122, 155, 87, 0.12)" filter="url(#wc-edge)"/>
+      <ellipse cx="1100" cy="95" rx="320" ry="55" fill="rgba(139, 126, 200, 0.1)" filter="url(#wc-edge)"/>
+      <path class="stroke-path" d="M0,85 C250,70 500,115 750,80 S1100,105 1350,75 1600,90" stroke="#7A9B57" stroke-width="1.5" fill="none" filter="url(#pencil)" opacity="0.35"/>
+      <path class="stroke-path" d="M0,105 C350,90 600,125 900,95 S1200,115 1600,100" stroke="#C45A3C" stroke-width="1.2" fill="none" filter="url(#pencil)" opacity="0.25"/>
+    </svg>
+  </div>
+
   <!-- ═══════════════ EDUCATION ═══════════════ -->
-  <section id="education" class="section-sage" style="position:relative;">
-    <svg class="section-wash" style="bottom:-40px;left:-60px;width:500px;height:400px;" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="150" cy="300" rx="200" ry="140" fill="rgba(107, 123, 60, 0.05)" filter="url(#wc-sm)"/>
+  <section id="education" style="position:relative;">
+    <svg class="paint-bg" data-paint viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="1600" height="900" fill="rgba(122, 155, 87, 0.03)"/>
+      <ellipse cx="200" cy="250" rx="380" ry="280" fill="rgba(122, 155, 87, 0.1)" filter="url(#wc-lg)"/>
+      <ellipse cx="280" cy="300" rx="220" ry="160" fill="rgba(91, 155, 213, 0.07)" filter="url(#wc)"/>
+      <ellipse cx="1300" cy="500" rx="300" ry="220" fill="rgba(217, 119, 6, 0.06)" filter="url(#wc-lg)"/>
     </svg>
     <div class="content reveal">
       <h2 class="r-child">Education</h2>
@@ -634,27 +690,41 @@
           <div class="timeline-meta">2022 — 2026</div>
           <div class="timeline-role">Bachelor of Science in [Your Major]</div>
           <div class="timeline-org">[University Name]</div>
-          <p class="timeline-desc">
-            [Describe your studies, relevant coursework, honors, or what you gained from this experience.]
-          </p>
+          <p class="timeline-desc">[Describe your studies, relevant coursework, honors, or what you gained from this experience.]</p>
         </div>
         <div class="timeline-item stg">
           <div class="timeline-meta">2018 — 2022</div>
           <div class="timeline-role">[High School or Other Education]</div>
           <div class="timeline-org">[School Name]</div>
-          <p class="timeline-desc">
-            [Any relevant achievements, activities, or formative experiences from this period.]
-          </p>
+          <p class="timeline-desc">[Any relevant achievements, activities, or formative experiences from this period.]</p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ═══════ DIVIDER ═══════ -->
+  <div class="wc-divider" data-paint>
+    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="400" cy="85" rx="350" ry="60" fill="rgba(196, 90, 60, 0.12)" filter="url(#wc-edge)"/>
+      <ellipse cx="1000" cy="100" rx="400" ry="70" fill="rgba(217, 119, 6, 0.1)" filter="url(#wc-edge)"/>
+      <ellipse cx="1400" cy="75" rx="250" ry="50" fill="rgba(139, 126, 200, 0.08)" filter="url(#wc-edge)"/>
+      <path class="stroke-path" d="M0,95 C200,75 500,120 800,85 S1200,110 1600,90" stroke="#C45A3C" stroke-width="1.5" fill="none" filter="url(#pencil)" opacity="0.35"/>
+    </svg>
+  </div>
+
   <!-- ═══════════════ EXPERIENCE ═══════════════ -->
-  <section id="experience" class="section-terra" style="position:relative;">
-    <svg class="section-wash" style="top:40px;right:-100px;width:650px;height:500px;" viewBox="0 0 650 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="450" cy="200" rx="250" ry="180" fill="rgba(198, 123, 92, 0.045)" filter="url(#wc)"/>
-      <ellipse cx="350" cy="300" rx="150" ry="100" fill="rgba(217, 119, 6, 0.03)" filter="url(#wc)"/>
+  <section id="experience" style="position:relative;">
+    <svg class="paint-bg" data-paint viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="1600" height="1000" fill="rgba(196, 90, 60, 0.03)"/>
+      <ellipse cx="1300" cy="200" rx="400" ry="300" fill="rgba(196, 90, 60, 0.1)" filter="url(#wc-lg)"/>
+      <ellipse cx="1350" cy="250" rx="250" ry="180" fill="rgba(217, 119, 6, 0.08)" filter="url(#wc)"/>
+      <ellipse cx="100" cy="700" rx="350" ry="250" fill="rgba(139, 126, 200, 0.08)" filter="url(#wc-lg)"/>
+      <ellipse cx="200" cy="750" rx="200" ry="140" fill="rgba(91, 155, 213, 0.06)" filter="url(#wc)"/>
+    </svg>
+    <!-- Floating watercolor splotch -->
+    <svg class="wc-blob" data-paint style="top:60px;right:-60px;width:500px;height:400px;animation:floatSlow 8s ease-in-out infinite;" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="250" cy="200" rx="200" ry="150" fill="rgba(196, 90, 60, 0.15)" filter="url(#wc)"/>
+      <ellipse cx="280" cy="180" rx="120" ry="90" fill="rgba(217, 119, 6, 0.12)" filter="url(#wc-sm)"/>
     </svg>
     <div class="content reveal">
       <h2 class="r-child">Experience</h2>
@@ -682,17 +752,32 @@
     </div>
   </section>
 
+  <!-- ═══════ DIVIDER ═══════ -->
+  <div class="wc-divider" data-paint>
+    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="300" cy="95" rx="380" ry="65" fill="rgba(91, 155, 213, 0.12)" filter="url(#wc-edge)"/>
+      <ellipse cx="900" cy="80" rx="350" ry="55" fill="rgba(139, 126, 200, 0.1)" filter="url(#wc-edge)"/>
+      <path class="stroke-path" d="M0,90 C300,70 600,115 900,80 S1300,105 1600,85" stroke="#5B9BD5" stroke-width="1.5" fill="none" filter="url(#pencil)" opacity="0.35"/>
+      <path class="stroke-path" d="M0,115 C250,100 550,130 850,95 S1150,120 1600,105" stroke="#8B7EC8" stroke-width="1.2" fill="none" filter="url(#pencil)" opacity="0.25"/>
+    </svg>
+  </div>
+
   <!-- ═══════════════ RESEARCH ═══════════════ -->
-  <section id="research" class="section-sand" style="position:relative;">
-    <svg class="section-wash" style="top:0;left:-80px;width:550px;height:450px;" viewBox="0 0 550 450" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="200" cy="250" rx="220" ry="170" fill="rgba(135, 134, 127, 0.05)" filter="url(#wc)"/>
+  <section id="research" style="position:relative;">
+    <svg class="paint-bg" data-paint viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="1600" height="900" fill="rgba(91, 155, 213, 0.03)"/>
+      <ellipse cx="150" cy="300" rx="380" ry="280" fill="rgba(91, 155, 213, 0.1)" filter="url(#wc-lg)"/>
+      <ellipse cx="230" cy="350" rx="220" ry="160" fill="rgba(139, 126, 200, 0.08)" filter="url(#wc)"/>
+      <ellipse cx="1400" cy="600" rx="300" ry="220" fill="rgba(122, 155, 87, 0.07)" filter="url(#wc-lg)"/>
+    </svg>
+    <svg class="wc-blob" data-paint style="bottom:40px;left:-80px;width:450px;height:350px;animation:floatSlow 10s ease-in-out 2s infinite;" viewBox="0 0 450 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="225" cy="175" rx="180" ry="130" fill="rgba(91, 155, 213, 0.14)" filter="url(#wc)"/>
+      <ellipse cx="200" cy="200" rx="120" ry="80" fill="rgba(139, 126, 200, 0.1)" filter="url(#wc-sm)"/>
     </svg>
     <div class="content reveal">
       <h2 class="r-child">Research</h2>
       <h3 class="r-child">Questions I've explored</h3>
-      <p class="r-child">
-        [Introduce your research interests broadly. What fields or questions draw you in?]
-      </p>
+      <p class="r-child">[Introduce your research interests broadly. What fields or questions draw you in?]</p>
       <div class="timeline">
         <div class="timeline-item stg">
           <div class="timeline-meta">2025</div>
@@ -710,32 +795,47 @@
     </div>
   </section>
 
+  <!-- ═══════ DIVIDER ═══════ -->
+  <div class="wc-divider" data-paint>
+    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="600" cy="85" rx="400" ry="65" fill="rgba(217, 119, 6, 0.12)" filter="url(#wc-edge)"/>
+      <ellipse cx="1200" cy="100" rx="300" ry="55" fill="rgba(196, 90, 60, 0.1)" filter="url(#wc-edge)"/>
+      <path class="stroke-path" d="M0,90 C400,65 700,120 1000,80 S1400,105 1600,85" stroke="#D97706" stroke-width="1.5" fill="none" filter="url(#pencil)" opacity="0.35"/>
+    </svg>
+  </div>
+
   <!-- ═══════════════ PROJECTS ═══════════════ -->
-  <section id="projects" class="section-warm" style="position:relative;">
-    <svg class="section-wash" style="bottom:-20px;right:-40px;width:550px;height:400px;" viewBox="0 0 550 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="400" cy="300" rx="220" ry="160" fill="rgba(198, 123, 92, 0.05)" filter="url(#wc-sm)"/>
+  <section id="projects" style="position:relative;">
+    <svg class="paint-bg" data-paint viewBox="0 0 1600 1100" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="1600" height="1100" fill="rgba(217, 119, 6, 0.025)"/>
+      <ellipse cx="1300" cy="300" rx="380" ry="280" fill="rgba(217, 119, 6, 0.1)" filter="url(#wc-lg)"/>
+      <ellipse cx="1350" cy="350" rx="220" ry="160" fill="rgba(196, 90, 60, 0.08)" filter="url(#wc)"/>
+      <ellipse cx="200" cy="800" rx="350" ry="250" fill="rgba(91, 155, 213, 0.08)" filter="url(#wc-lg)"/>
+      <ellipse cx="300" cy="850" rx="200" ry="140" fill="rgba(139, 126, 200, 0.06)" filter="url(#wc)"/>
+    </svg>
+    <svg class="wc-blob" data-paint style="top:100px;right:-40px;width:400px;height:350px;animation:floatSlow 9s ease-in-out 1s infinite;" viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="200" cy="175" rx="160" ry="130" fill="rgba(217, 119, 6, 0.16)" filter="url(#wc)"/>
+      <ellipse cx="220" cy="160" rx="100" ry="80" fill="rgba(245, 158, 11, 0.12)" filter="url(#wc-sm)"/>
     </svg>
     <div class="content reveal">
       <h2 class="r-child">Projects</h2>
       <h3 class="r-child">Things I've built</h3>
-      <p class="r-child">
-        [What motivates your projects — learning, solving a problem, creative exploration.]
-      </p>
+      <p class="r-child">[What motivates your projects — learning, solving a problem, creative exploration.]</p>
       <div class="projects-grid">
         <div class="project-card stg">
-          <div class="project-tag">Software</div>
+          <div class="project-tag tag-purple">Software</div>
           <div class="project-title">[Project Name]</div>
           <p class="project-desc">[What is it, why did you build it, and what's interesting about it?]</p>
           <a href="#" class="project-link">View project <span class="arrow">&rarr;</span></a>
         </div>
         <div class="project-card stg">
-          <div class="project-tag">Data</div>
+          <div class="project-tag tag-blue">Data</div>
           <div class="project-title">[Project Name]</div>
           <p class="project-desc">[Description of another project. Vary the tags to show range.]</p>
           <a href="#" class="project-link">View project <span class="arrow">&rarr;</span></a>
         </div>
         <div class="project-card stg">
-          <div class="project-tag">Design</div>
+          <div class="project-tag tag-terra">Design</div>
           <div class="project-title">[Project Name]</div>
           <p class="project-desc">[One more project. Add or remove cards as needed.]</p>
           <a href="#" class="project-link">View project <span class="arrow">&rarr;</span></a>
@@ -744,14 +844,27 @@
     </div>
   </section>
 
+  <!-- ═══════ DIVIDER ═══════ -->
+  <div class="wc-divider" data-paint>
+    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="400" cy="90" rx="350" ry="60" fill="rgba(122, 155, 87, 0.12)" filter="url(#wc-edge)"/>
+      <ellipse cx="1100" cy="85" rx="380" ry="65" fill="rgba(91, 155, 213, 0.1)" filter="url(#wc-edge)"/>
+      <path class="stroke-path" d="M0,95 C300,75 600,120 900,80 S1300,100 1600,85" stroke="#7A9B57" stroke-width="1.4" fill="none" filter="url(#pencil)" opacity="0.3"/>
+    </svg>
+  </div>
+
   <!-- ═══════════════ INTERESTS ═══════════════ -->
-  <section id="interests" class="section-sage">
+  <section id="interests" style="position:relative;">
+    <svg class="paint-bg" data-paint viewBox="0 0 1600 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="1600" height="700" fill="rgba(122, 155, 87, 0.03)"/>
+      <ellipse cx="300" cy="200" rx="350" ry="250" fill="rgba(122, 155, 87, 0.09)" filter="url(#wc-lg)"/>
+      <ellipse cx="350" cy="250" rx="200" ry="150" fill="rgba(91, 155, 213, 0.06)" filter="url(#wc)"/>
+      <ellipse cx="1300" cy="400" rx="300" ry="200" fill="rgba(139, 126, 200, 0.08)" filter="url(#wc-lg)"/>
+    </svg>
     <div class="content reveal">
       <h2 class="r-child">Interests</h2>
       <h3 class="r-child">Beyond the work</h3>
-      <p class="r-child">
-        [Write about what you do outside of work and school. Hobbies, passions, things you're curious about.]
-      </p>
+      <p class="r-child">[Write about what you do outside of work and school. Hobbies, passions, things you're curious about.]</p>
       <div class="interests-list">
         <span class="interest-tag r-child">[Interest 1]</span>
         <span class="interest-tag r-child">[Interest 2]</span>
@@ -765,17 +878,31 @@
     </div>
   </section>
 
+  <!-- ═══════ DIVIDER ═══════ -->
+  <div class="wc-divider" data-paint>
+    <svg viewBox="0 0 1600 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="500" cy="90" rx="400" ry="65" fill="rgba(139, 126, 200, 0.12)" filter="url(#wc-edge)"/>
+      <ellipse cx="1100" cy="85" rx="350" ry="55" fill="rgba(196, 90, 60, 0.1)" filter="url(#wc-edge)"/>
+      <path class="stroke-path" d="M0,90 C350,70 700,115 1000,80 S1350,100 1600,85" stroke="#8B7EC8" stroke-width="1.5" fill="none" filter="url(#pencil)" opacity="0.35"/>
+    </svg>
+  </div>
+
   <!-- ═══════════════ CONNECT ═══════════════ -->
-  <section id="connect" class="section-terra" style="position:relative;">
-    <svg class="section-wash" style="top:20px;left:-60px;width:500px;height:350px;" viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <ellipse cx="180" cy="180" rx="200" ry="140" fill="rgba(198, 123, 92, 0.05)" filter="url(#wc-sm)"/>
+  <section id="connect" style="position:relative;">
+    <svg class="paint-bg" data-paint viewBox="0 0 1600 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="1600" height="800" fill="rgba(139, 126, 200, 0.03)"/>
+      <ellipse cx="200" cy="200" rx="380" ry="280" fill="rgba(139, 126, 200, 0.1)" filter="url(#wc-lg)"/>
+      <ellipse cx="280" cy="250" rx="220" ry="160" fill="rgba(196, 90, 60, 0.07)" filter="url(#wc)"/>
+      <ellipse cx="1400" cy="500" rx="300" ry="220" fill="rgba(91, 155, 213, 0.08)" filter="url(#wc-lg)"/>
+    </svg>
+    <svg class="wc-blob" data-paint style="top:30px;left:-50px;width:400px;height:300px;animation:floatSlow 11s ease-in-out infinite;" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="200" cy="150" rx="160" ry="120" fill="rgba(139, 126, 200, 0.15)" filter="url(#wc)"/>
+      <ellipse cx="180" cy="170" rx="100" ry="70" fill="rgba(91, 155, 213, 0.1)" filter="url(#wc-sm)"/>
     </svg>
     <div class="content reveal">
       <h2 class="r-child">Connect</h2>
       <h3 class="r-child">Let's talk</h3>
-      <p class="r-child">
-        I'm always open to interesting conversations, collaborations, or just saying hello.
-      </p>
+      <p class="r-child">I'm always open to interesting conversations, collaborations, or just saying hello.</p>
       <div class="social-links">
         <a href="https://github.com/" class="social-link stg" target="_blank" rel="noopener">
           <div><div class="social-link-name">GitHub</div><div class="social-link-handle">@yourusername</div></div>
@@ -797,17 +924,19 @@
     </div>
   </section>
 
-  <!-- Bottom decorative lines + wash -->
-  <div style="position:relative;height:100px;overflow:hidden;background:var(--bg-alt);">
-    <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1600 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <g filter="url(#pencil)" opacity="0.2">
-        <path d="M0,20 Q400,18 800,22 T1600,15" stroke="#C67B5C" stroke-width="1" fill="none"/>
-        <path d="M0,35 Q400,33 800,37 T1600,30" stroke="#87867f" stroke-width="1" fill="none"/>
-        <path d="M0,50 Q400,48 800,52 T1600,48" stroke="#D4C4A8" stroke-width="1" fill="none"/>
-        <path d="M0,65 Q400,67 800,63 T1600,68" stroke="#87867f" stroke-width="1" fill="none"/>
-        <path d="M0,80 Q400,78 800,82 T1600,78" stroke="#6B7B3C" stroke-width="0.8" fill="none"/>
+  <!-- Bottom decorative band -->
+  <div style="position:relative;height:120px;overflow:hidden;">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1600 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g filter="url(#pencil)" opacity="0.25">
+        <path d="M0,20 Q400,15 800,25 T1600,15" stroke="#8B7EC8" stroke-width="1.2" fill="none"/>
+        <path d="M0,35 Q400,38 800,30 T1600,38" stroke="#5B9BD5" stroke-width="1" fill="none"/>
+        <path d="M0,50 Q400,48 800,55 T1600,48" stroke="#C45A3C" stroke-width="1.1" fill="none"/>
+        <path d="M0,65 Q400,68 800,62 T1600,68" stroke="#D97706" stroke-width="1" fill="none"/>
+        <path d="M0,80 Q400,78 800,85 T1600,78" stroke="#7A9B57" stroke-width="0.9" fill="none"/>
+        <path d="M0,95 Q400,98 800,92 T1600,98" stroke="#8B7EC8" stroke-width="1" fill="none"/>
       </g>
-      <ellipse cx="800" cy="50" rx="500" ry="40" fill="rgba(198, 123, 92, 0.04)" filter="url(#wc-sm)"/>
+      <ellipse cx="400" cy="60" rx="350" ry="40" fill="rgba(139, 126, 200, 0.06)" filter="url(#wc-sm)"/>
+      <ellipse cx="1100" cy="60" rx="400" ry="45" fill="rgba(91, 155, 213, 0.05)" filter="url(#wc-sm)"/>
     </svg>
   </div>
 
@@ -819,6 +948,7 @@
   </footer>
 
   <script>
+    // Scroll-triggered reveal for content
     const revealObs = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -826,10 +956,21 @@
           revealObs.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
-
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
     document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
+    // Scroll-triggered "paint-in" for watercolor backgrounds, blobs, and dividers
+    const paintObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('painted');
+          paintObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('[data-paint]').forEach(el => paintObs.observe(el));
+
+    // Smooth scroll for nav links
     document.querySelectorAll('nav a[href^="#"]').forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
@@ -838,6 +979,7 @@
       });
     });
 
+    // Auto-hiding nav
     let lastY = 0;
     const navEl = document.querySelector('nav');
     window.addEventListener('scroll', () => {
@@ -846,16 +988,17 @@
       lastY = y;
     }, { passive: true });
 
-    // Parallax on section washes
-    const washes = document.querySelectorAll('.section-wash');
+    // Parallax on floating blobs
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!prefersReduced) {
+      const blobs = document.querySelectorAll('.wc-blob');
       window.addEventListener('scroll', () => {
-        const sy = window.scrollY;
-        washes.forEach(w => {
-          const rect = w.closest('section').getBoundingClientRect();
-          const progress = (rect.top + rect.height / 2) / window.innerHeight;
-          w.style.transform = `translateY(${progress * -25}px)`;
+        blobs.forEach(b => {
+          const sec = b.closest('section');
+          if (!sec) return;
+          const rect = sec.getBoundingClientRect();
+          const progress = rect.top / window.innerHeight;
+          b.style.transform = `translateY(${progress * -30}px)`;
         });
       }, { passive: true });
     }
