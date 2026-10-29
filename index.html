@@ -12,10 +12,12 @@
 
     :root {
       --bg: #F4F1EA;
+      --bg-warm: #EFE9DC;
       --text: #1c1c1a;
       --text-2: #4a4843;
       --text-3: #8a8780;
       --accent: #D97757;
+      --ochre: #C49A3C;
       --border: #d4d0c8;
       --rule: #c8c4bc;
       --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
@@ -35,19 +37,13 @@
       * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
 
-    /* ── TYPOGRAPHY ── */
     h1, h2, h3 { font-family: var(--serif); font-weight: 400; }
     .label {
       font-family: var(--mono); font-size: 11px; font-weight: 400;
       text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-3);
     }
 
-    /* ── RULES ── */
-    hr.rule {
-      border: none; border-top: 1px solid var(--rule);
-      max-width: var(--max-w); margin: 0 auto;
-      padding: 0 var(--gutter);
-    }
+    hr.rule { border: none; border-top: 1px solid var(--rule); max-width: var(--max-w); margin: 0 auto; }
     hr.rule.full { max-width: none; }
 
     /* ── NAV ── */
@@ -68,14 +64,12 @@
     .nav-links a {
       font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
       color: var(--text-3); text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.1s;
+      border-bottom: 1px solid transparent; transition: border-color 0.1s;
     }
     .nav-links a:hover { border-bottom-color: var(--text); color: var(--text); }
 
-    /* ── PROGRESS ── */
     .progress-track {
-      position: fixed; top: 47px; left: 0; right: 0; height: 1px;
+      position: fixed; top: 47px; left: 0; right: 0; height: 2px;
       background: var(--border); z-index: 99;
     }
     .progress-fill { height: 100%; width: 0%; background: var(--accent); }
@@ -86,7 +80,7 @@
       display: flex; flex-direction: column; justify-content: flex-end;
       padding: 0 var(--gutter) 80px;
     }
-    #heroCanvas {
+    .hero canvas {
       position: absolute; inset: 0; width: 100%; height: 100%;
       pointer-events: none;
     }
@@ -94,25 +88,14 @@
       position: relative; z-index: 1;
       max-width: var(--max-w); margin: 0 auto; width: 100%;
     }
-    .hero-content h1 {
-      font-size: 42px; line-height: 1.15; margin-bottom: 20px;
-    }
-    .hero-meta {
-      display: flex; align-items: center; gap: 16px;
-      margin-bottom: 20px;
-    }
+    .hero-content h1 { font-size: 42px; line-height: 1.15; margin-bottom: 20px; }
+    .hero-meta { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
     .hero-meta .label { color: var(--accent); }
-    .hero-meta .divider {
-      width: 40px; height: 1px; background: var(--rule);
-    }
-    .hero-desc {
-      max-width: 480px; font-size: 16px; line-height: 1.7;
-      color: var(--text-2);
-    }
+    .hero-meta .divider { width: 40px; height: 1px; background: var(--rule); }
+    .hero-desc { max-width: 480px; font-size: 16px; line-height: 1.7; color: var(--text-2); }
     .scroll-cue {
       position: absolute; bottom: 32px; right: var(--gutter);
-      font-family: var(--mono); font-size: 10px; color: var(--text-3);
-      letter-spacing: 0.1em;
+      font-family: var(--mono); font-size: 10px; color: var(--text-3); letter-spacing: 0.1em;
     }
 
     /* ── SECTION GRID ── */
@@ -124,37 +107,53 @@
     .sg-label { padding-top: 4px; }
     .sg-content p { color: var(--text-2); margin-bottom: 16px; }
     .sg-content p:last-child { margin-bottom: 0; }
+    .columns-2 { column-count: 2; column-gap: 48px; column-rule: 1px solid var(--border); }
 
-    .columns-2 {
-      column-count: 2; column-gap: 48px;
-      column-rule: 1px solid var(--border);
+    /* ── DOSSIER (accumulating cards + Monte Carlo) ── */
+    .dossier {
+      position: relative;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg-warm) 8%, var(--bg-warm) 92%, var(--bg) 100%);
     }
-
-    /* ── SCROLLYTELLING ── */
-    .scrolly { position: relative; }
-    .scrolly-sticky {
+    .dossier-bg {
       position: sticky; top: 0; height: 100vh;
-      display: flex; align-items: center; justify-content: center;
+      z-index: 0; pointer-events: none;
     }
-    #timelineCanvas {
-      position: absolute; inset: 0; width: 100%; height: 100%;
+    .dossier-bg canvas { width: 100%; height: 100%; }
+    .dossier-flow {
+      position: relative; z-index: 2;
+      margin-top: -100vh;
     }
-    .scrolly-beats { position: relative; z-index: 2; }
-    .beat {
-      min-height: 85vh; display: flex; align-items: center;
-      padding: 0 var(--gutter);
+    .dossier-header {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: 72px var(--gutter) 20px;
+      display: grid; grid-template-columns: 180px 1fr; gap: 48px;
     }
-    .beat:last-child { min-height: 50vh; }
-    .beat-card {
-      max-width: 340px; padding: 24px 28px;
-      background: rgba(244,241,234,0.94);
+    .dossier-stack {
+      max-width: 580px; margin: 0 auto;
+      padding: 20vh var(--gutter) 30vh;
+      display: flex; flex-direction: column; gap: 70vh;
+    }
+
+    .dossier-card {
+      position: relative; padding: 32px 36px;
+      background: rgba(244,241,234,0.93);
       border: 1px solid var(--rule);
-      opacity: 0; transition: opacity 0.4s ease;
+      opacity: 0; transition: opacity 0.5s ease;
     }
-    .beat.active .beat-card { opacity: 1; }
-    .beat-card .label { margin-bottom: 8px; color: var(--accent); }
-    .beat-card h3 { font-size: 19px; line-height: 1.35; margin-bottom: 10px; }
-    .beat-card p { font-size: 14px; line-height: 1.65; color: var(--text-2); }
+    .dossier-card.visible { opacity: 1; }
+
+    .card-rule {
+      display: block; width: 48px; height: 2px; margin-bottom: 16px; overflow: visible;
+    }
+    .card-rule line {
+      stroke: var(--accent); stroke-width: 2;
+      stroke-dasharray: 1; stroke-dashoffset: 1;
+      transition: stroke-dashoffset 0.8s ease 0.15s;
+    }
+    .dossier-card.visible .card-rule line { stroke-dashoffset: 0; }
+    .dossier-card h3 { font-size: 19px; line-height: 1.35; margin-bottom: 10px; }
+    .dossier-card p { font-size: 14px; line-height: 1.65; color: var(--text-2); }
+    .dossier-card .label { margin-bottom: 4px; color: var(--accent); }
 
     /* ── WORK LIST ── */
     .work-list { border-top: 1px solid var(--border); }
@@ -170,35 +169,23 @@
       padding-left: 14px; padding-right: 14px;
     }
     .work-title { font-family: var(--serif); font-size: 18px; }
-    .work-desc {
-      font-size: 13px; color: var(--text-3); margin-top: 2px;
-      transition: color 0.08s;
-    }
+    .work-desc { font-size: 13px; color: var(--text-3); margin-top: 2px; transition: color 0.08s; }
     .work-entry:hover .work-desc { color: rgba(244,241,234,0.6); }
-    .work-meta {
-      font-family: var(--mono); font-size: 12px; color: var(--text-3);
-      white-space: nowrap; transition: color 0.08s;
-    }
+    .work-meta { font-family: var(--mono); font-size: 12px; color: var(--text-3); white-space: nowrap; transition: color 0.08s; }
     .work-entry:hover .work-meta { color: rgba(244,241,234,0.5); }
 
-    /* ── KEYWORDS ── */
-    .keyword-grid {
-      display: flex; flex-wrap: wrap; gap: 0;
-    }
+    .keyword-grid { display: flex; flex-wrap: wrap; gap: 0; }
     .keyword-grid span {
       font-family: var(--mono); font-size: 13px; color: var(--text-2);
-      padding: 10px 20px;
-      border: 1px solid var(--border);
+      padding: 10px 20px; border: 1px solid var(--border);
       margin-right: -1px; margin-bottom: -1px;
-      transition: background 0.08s, color 0.08s;
-      cursor: default;
+      transition: background 0.08s, color 0.08s; cursor: default;
     }
     .keyword-grid span:hover {
       background: var(--accent); color: var(--bg);
       border-color: var(--accent); position: relative; z-index: 1;
     }
 
-    /* ── CORRESPONDENCE ── */
     .link-list { border-top: 1px solid var(--border); }
     .link-list a {
       display: flex; align-items: center; justify-content: space-between;
@@ -207,30 +194,23 @@
       font-family: var(--sans); font-size: 15px; font-weight: 500;
       transition: background 0.08s, color 0.08s, padding 0.08s;
     }
-    .link-list a:hover {
-      background: var(--text); color: var(--bg);
-      padding-left: 14px; padding-right: 14px;
-    }
-    .link-list .handle {
-      font-family: var(--mono); font-size: 12px; color: var(--text-3);
-      transition: color 0.08s;
-    }
+    .link-list a:hover { background: var(--text); color: var(--bg); padding-left: 14px; padding-right: 14px; }
+    .link-list .handle { font-family: var(--mono); font-size: 12px; color: var(--text-3); transition: color 0.08s; }
     .link-list a:hover .handle { color: rgba(244,241,234,0.5); }
 
-    /* ── FOOTER ── */
     footer {
       padding: 40px var(--gutter); max-width: var(--max-w); margin: 0 auto;
       font-family: var(--mono); font-size: 11px; color: var(--text-3);
       display: flex; justify-content: space-between;
     }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       :root { --gutter: 20px; }
       .hero-content h1 { font-size: 30px; }
-      .sg { grid-template-columns: 1fr; gap: 16px; padding: 48px var(--gutter); }
+      .sg, .dossier-header { grid-template-columns: 1fr; gap: 16px; padding: 48px var(--gutter); }
       .columns-2 { column-count: 1; }
-      .beat-card { max-width: 260px; }
+      .dossier-stack { max-width: 100%; gap: 50vh; }
+      .dossier-card { padding: 24px; }
       .scroll-cue { display: none; }
       footer { flex-direction: column; gap: 4px; }
     }
@@ -281,56 +261,60 @@
 
   <hr class="rule full">
 
-  <!-- ═══ CURRICULUM — scrollytelling ═══ -->
-  <div class="sg" id="curriculum">
-    <div class="sg-label"><span class="label">Curriculum Vitae</span></div>
-    <div class="sg-content">
-      <p>Education, positions, and the trajectory of inquiry.</p>
-    </div>
-  </div>
-
-  <div class="scrolly">
-    <div class="scrolly-sticky">
-      <canvas id="timelineCanvas"></canvas>
-    </div>
-    <div class="scrolly-beats">
-      <div class="beat" data-step="0">
-        <div class="beat-card">
-          <div class="label">Education</div>
-          <h3>[University Name], [Year]–[Year]</h3>
-          <p>[Degree, concentration, and relevant coursework. State what you studied and why it matters to your current direction.]</p>
-        </div>
-      </div>
-      <div class="beat" data-step="1">
-        <div class="beat-card">
-          <div class="label">Position</div>
-          <h3>[Title] at [Organization]</h3>
-          <p>[What you did and what it produced. One concrete outcome is worth more than three vague responsibilities.]</p>
-        </div>
-      </div>
-      <div class="beat" data-step="2">
-        <div class="beat-card">
-          <div class="label">Research</div>
-          <h3>[Project or Paper Title]</h3>
-          <p>[The question, your method, and what you found. This is where formal training meets real-world application.]</p>
-        </div>
-      </div>
-      <div class="beat" data-step="3">
-        <div class="beat-card">
-          <div class="label">Projects</div>
-          <h3>[Project Name]</h3>
-          <p>[What you built, the tools used, and the problem it addresses. Demonstrate range without overstating scope.]</p>
-        </div>
-      </div>
-      <div class="beat" data-step="4">
-        <div class="beat-card">
-          <div class="label">Trajectory</div>
-          <h3>Open questions</h3>
-          <p>[Where you are headed — graduate study, industry research, independent work. State the direction and the reasoning behind it.]</p>
-        </div>
+  <!-- ═══ DOSSIER — accumulating cards + Monte Carlo ═══ -->
+  <section class="dossier" id="curriculum">
+    <div class="dossier-bg"><canvas id="mcCanvas"></canvas></div>
+    <div class="dossier-flow">
+    <div class="dossier-header">
+      <div class="sg-label"><span class="label">Curriculum Vitae</span></div>
+      <div class="sg-content">
+        <p>Education, positions, and the trajectory of inquiry.</p>
       </div>
     </div>
-  </div>
+    <div class="dossier-stack">
+      <div class="dossier-card" data-step="0">
+        <svg class="card-rule" viewBox="0 0 1 1" preserveAspectRatio="none">
+          <line x1="0" y1="0.5" x2="1" y2="0.5" pathLength="1"/>
+        </svg>
+        <div class="label">Education</div>
+        <h3>[University Name], [Year]–[Year]</h3>
+        <p>[Degree, concentration, and relevant coursework. State what you studied and why it matters to your current direction.]</p>
+      </div>
+      <div class="dossier-card" data-step="1">
+        <svg class="card-rule" viewBox="0 0 1 1" preserveAspectRatio="none">
+          <line x1="0" y1="0.5" x2="1" y2="0.5" pathLength="1"/>
+        </svg>
+        <div class="label">Position</div>
+        <h3>[Title] at [Organization]</h3>
+        <p>[What you did and what it produced. One concrete outcome is worth more than three vague responsibilities.]</p>
+      </div>
+      <div class="dossier-card" data-step="2">
+        <svg class="card-rule" viewBox="0 0 1 1" preserveAspectRatio="none">
+          <line x1="0" y1="0.5" x2="1" y2="0.5" pathLength="1"/>
+        </svg>
+        <div class="label">Research</div>
+        <h3>[Project or Paper Title]</h3>
+        <p>[The question, your method, and what you found. This is where formal training meets real-world application.]</p>
+      </div>
+      <div class="dossier-card" data-step="3">
+        <svg class="card-rule" viewBox="0 0 1 1" preserveAspectRatio="none">
+          <line x1="0" y1="0.5" x2="1" y2="0.5" pathLength="1"/>
+        </svg>
+        <div class="label">Projects</div>
+        <h3>[Project Name]</h3>
+        <p>[What you built, the tools used, and the problem it addresses. Demonstrate range without overstating scope.]</p>
+      </div>
+      <div class="dossier-card" data-step="4">
+        <svg class="card-rule" viewBox="0 0 1 1" preserveAspectRatio="none">
+          <line x1="0" y1="0.5" x2="1" y2="0.5" pathLength="1"/>
+        </svg>
+        <div class="label">Trajectory</div>
+        <h3>Open questions</h3>
+        <p>[Where you are headed — graduate study, industry research, independent work. State the direction and the reasoning behind it.]</p>
+      </div>
+    </div>
+    </div>
+  </section>
 
   <hr class="rule full">
 
@@ -340,38 +324,23 @@
     <div class="sg-content">
       <div class="work-list">
         <a class="work-entry" href="#">
-          <div>
-            <div class="work-title">[Project or Role Name]</div>
-            <div class="work-desc">[Organization or context — one line]</div>
-          </div>
+          <div><div class="work-title">[Project or Role Name]</div><div class="work-desc">[Organization or context]</div></div>
           <div class="work-meta">2025–Present</div>
         </a>
         <a class="work-entry" href="#">
-          <div>
-            <div class="work-title">[Project or Role Name]</div>
-            <div class="work-desc">[Organization or context — one line]</div>
-          </div>
+          <div><div class="work-title">[Project or Role Name]</div><div class="work-desc">[Organization or context]</div></div>
           <div class="work-meta">2024–2025</div>
         </a>
         <a class="work-entry" href="#">
-          <div>
-            <div class="work-title">[Project or Role Name]</div>
-            <div class="work-desc">[Organization or context — one line]</div>
-          </div>
+          <div><div class="work-title">[Project or Role Name]</div><div class="work-desc">[Organization or context]</div></div>
           <div class="work-meta">Summer 2024</div>
         </a>
         <a class="work-entry" href="#">
-          <div>
-            <div class="work-title">[Research Paper or Project]</div>
-            <div class="work-desc">[Lab, university, or independent]</div>
-          </div>
+          <div><div class="work-title">[Research Paper or Project]</div><div class="work-desc">[Lab, university, or independent]</div></div>
           <div class="work-meta">2024</div>
         </a>
         <a class="work-entry" href="#">
-          <div>
-            <div class="work-title">[Side Project]</div>
-            <div class="work-desc">[What it does]</div>
-          </div>
+          <div><div class="work-title">[Side Project]</div><div class="work-desc">[What it does]</div></div>
           <div class="work-meta">Ongoing</div>
         </a>
       </div>
@@ -380,83 +349,53 @@
 
   <hr class="rule full">
 
-  <!-- ═══ AREAS OF INQUIRY ═══ -->
   <section class="sg">
     <div class="sg-label"><span class="label">Areas of Inquiry</span></div>
     <div class="sg-content">
       <div class="keyword-grid">
-        <span>[Topic 1]</span>
-        <span>[Topic 2]</span>
-        <span>[Topic 3]</span>
-        <span>[Topic 4]</span>
-        <span>[Topic 5]</span>
-        <span>[Topic 6]</span>
-        <span>[Topic 7]</span>
-        <span>[Topic 8]</span>
+        <span>[Topic 1]</span><span>[Topic 2]</span><span>[Topic 3]</span><span>[Topic 4]</span>
+        <span>[Topic 5]</span><span>[Topic 6]</span><span>[Topic 7]</span><span>[Topic 8]</span>
       </div>
     </div>
   </section>
 
   <hr class="rule full">
 
-  <!-- ═══ CORRESPONDENCE ═══ -->
   <section class="sg" id="correspondence">
     <div class="sg-label"><span class="label">Correspondence</span></div>
     <div class="sg-content">
       <p style="margin-bottom:24px;color:var(--text-2)">Open to substantive conversations, collaboration proposals, and research inquiries.</p>
       <div class="link-list">
-        <a href="https://github.com/jpzam1106" target="_blank" rel="noopener">
-          <span>GitHub</span>
-          <span class="handle">jpzam1106</span>
-        </a>
-        <a href="https://linkedin.com/in/" target="_blank" rel="noopener">
-          <span>LinkedIn</span>
-          <span class="handle">/in/jpzambrano</span>
-        </a>
-        <a href="https://x.com/" target="_blank" rel="noopener">
-          <span>X</span>
-          <span class="handle">@jpzambrano</span>
-        </a>
-        <a href="mailto:jpzambranobusiness@gmail.com">
-          <span>Email</span>
-          <span class="handle">jpzambranobusiness@gmail.com</span>
-        </a>
+        <a href="https://github.com/jpzam1106" target="_blank" rel="noopener"><span>GitHub</span><span class="handle">jpzam1106</span></a>
+        <a href="https://linkedin.com/in/" target="_blank" rel="noopener"><span>LinkedIn</span><span class="handle">/in/jpzambrano</span></a>
+        <a href="https://x.com/" target="_blank" rel="noopener"><span>X</span><span class="handle">@jpzambrano</span></a>
+        <a href="mailto:jpzambranobusiness@gmail.com"><span>Email</span><span class="handle">jpzambranobusiness@gmail.com</span></a>
       </div>
     </div>
   </section>
 
   <hr class="rule full">
-  <footer>
-    <span>&copy; 2026 JP Zambrano</span>
-    <span>All rights reserved.</span>
-  </footer>
+  <footer><span>&copy; 2026 JP Zambrano</span><span>All rights reserved.</span></footer>
 
   <script>
-    // ── Canvas setup ──
+    // ── Utilities ──
     function initCanvas(canvas) {
       const dpr = window.devicePixelRatio || 1;
-      const w = canvas.clientWidth;
-      const h = canvas.clientHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
+      const w = canvas.clientWidth, h = canvas.clientHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
       const ctx = canvas.getContext('2d');
       ctx.scale(dpr, dpr);
-      return { ctx, w, h, dpr };
+      return { ctx, w, h };
     }
 
-    const heroCanvas = document.getElementById('heroCanvas');
-    const tlCanvas = document.getElementById('timelineCanvas');
-    let hero = initCanvas(heroCanvas);
-    let tl = initCanvas(tlCanvas);
-
-    window.addEventListener('resize', () => {
-      hero = initCanvas(heroCanvas);
-      tl = initCanvas(tlCanvas);
-    });
-
-    // ── Flowing curves: Hero ──
-    const ACCENT = { r: 217, g: 119, b: 87 };
-    const CHARCOAL = { r: 28, g: 28, b: 26 };
+    function mulberry32(seed) {
+      return function() {
+        seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+        let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
 
     function noise(x, t, seed) {
       return Math.sin(x * 1.9 + t + seed) * 0.5
@@ -464,123 +403,196 @@
            + Math.sin(x * 6.1 + t * 0.35 + seed * 0.8) * 0.125;
     }
 
+    const ACCENT  = { r: 217, g: 119, b: 87 };
+    const OCHRE   = { r: 196, g: 154, b: 60 };
+    const CHARCOAL = { r: 28, g: 28, b: 26 };
+
+    function rgba(c, a) { return `rgba(${c.r},${c.g},${c.b},${a})`; }
+
+    // ── Canvas refs ──
+    const heroEl = document.getElementById('heroCanvas');
+    const mcEl   = document.getElementById('mcCanvas');
+    let hero = initCanvas(heroEl);
+    let mc   = initCanvas(mcEl);
+
+    window.addEventListener('resize', () => {
+      hero = initCanvas(heroEl);
+      mc   = initCanvas(mcEl);
+    });
+
+    // ── Hero: chalk curves + watercolor washes ──
+    function heroCurveY(i, px, w, h, t, scroll, total) {
+      const pct = i / (total - 1);
+      const baseY = h * 0.1 + pct * h * 0.8;
+      const x = px / w;
+      const freq = 2.5 + i * 0.18;
+      const amp = 18 + i * 2.2 + scroll * 14;
+      return baseY + noise(x * freq, t * 0.35, i * 1.4) * amp
+           + Math.sin(x * Math.PI * 2 + scroll * Math.PI * 3) * scroll * 8;
+    }
+
     function drawHero(ctx, w, h, t, scroll) {
       ctx.clearRect(0, 0, w, h);
-      const numCurves = 18;
+      const N = 20;
 
-      for (let i = 0; i < numCurves; i++) {
-        const pct = i / (numCurves - 1);
-        const baseY = h * 0.12 + pct * h * 0.76;
-        const c = i % 4 === 0 ? ACCENT : CHARCOAL;
-        const alpha = i % 4 === 0
-          ? 0.07 + Math.abs(Math.sin(i * 0.9)) * 0.06
-          : 0.03 + Math.abs(Math.sin(i * 1.1)) * 0.04;
-        const lw = i % 4 === 0 ? 1.4 : 0.6 + (i % 3) * 0.3;
-
+      // Watercolor washes between curve bands
+      for (let band = 0; band < N - 4; band += 4) {
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(${c.r},${c.g},${c.b},${alpha})`;
-        ctx.lineWidth = lw;
+        for (let px = 0; px <= w; px += 4) {
+          const y = heroCurveY(band, px, w, h, t, scroll, N);
+          px === 0 ? ctx.moveTo(px, y) : ctx.lineTo(px, y);
+        }
+        for (let px = w; px >= 0; px -= 4) {
+          const y = heroCurveY(band + 4, px, w, h, t, scroll, N);
+          ctx.lineTo(px, y);
+        }
+        ctx.closePath();
+        const washC = [ACCENT, OCHRE, CHARCOAL, ACCENT][Math.floor(band / 4) % 4];
+        const washA = washC === CHARCOAL ? 0.015 : 0.03;
+        ctx.fillStyle = rgba(washC, washA);
+        ctx.fill();
+      }
 
-        const freq = 2.5 + i * 0.2;
-        const amp = 16 + i * 2.5 + scroll * 12;
-        const seed = i * 1.4;
-
+      // Chalk curves
+      ctx.shadowBlur = 1.5;
+      for (let i = 0; i < N; i++) {
+        const c = i % 5 === 0 ? ACCENT : i % 5 === 2 ? OCHRE : CHARCOAL;
+        const a = c === ACCENT ? 0.16 : c === OCHRE ? 0.12 : 0.05 + Math.abs(Math.sin(i)) * 0.03;
+        ctx.beginPath();
+        ctx.strokeStyle = rgba(c, a);
+        ctx.shadowColor = rgba(c, a * 0.4);
+        ctx.lineWidth = c === ACCENT ? 1.6 : c === OCHRE ? 1.2 : 0.7 + (i % 3) * 0.25;
         for (let px = 0; px <= w; px += 2) {
-          const x = px / w;
-          const n = noise(x * freq, t * 0.35, seed);
-          const scrollShift = Math.sin(x * Math.PI * 2 + scroll * Math.PI * 3) * scroll * 8;
-          const y = baseY + n * amp + scrollShift;
-          if (px === 0) ctx.moveTo(px, y); else ctx.lineTo(px, y);
+          const y = heroCurveY(i, px, w, h, t, scroll, N);
+          px === 0 ? ctx.moveTo(px, y) : ctx.lineTo(px, y);
         }
         ctx.stroke();
       }
+      ctx.shadowBlur = 0;
     }
 
-    // ── Flowing curves: Timeline (scrollytelling) ──
-    let targetStep = -1;
-    let smoothSpread = 0.04;
-    let smoothCount = 2;
+    // ── Monte Carlo simulation ──
+    const MC_PATHS = 80;
+    const MC_STEPS = 200;
+    const mcPaths = [];
 
-    const STEP_CONFIGS = [
-      { spread: 0.06, count: 4 },
-      { spread: 0.18, count: 7 },
-      { spread: 0.32, count: 11 },
-      { spread: 0.50, count: 15 },
-      { spread: 0.72, count: 20 },
-    ];
+    // Pre-generate random walks
+    for (let p = 0; p < MC_PATHS; p++) {
+      const rng = mulberry32(p * 73 + 17);
+      const path = new Float32Array(MC_STEPS);
+      path[0] = 0;
+      for (let s = 1; s < MC_STEPS; s++) {
+        const gauss = (rng() + rng() + rng() - 1.5) * 1.15;
+        path[s] = path[s - 1] + 0.08 * (rng() - 0.47) + 2.2 * gauss;
+      }
+      mcPaths.push(path);
+    }
 
-    function drawTimeline(ctx, w, h, t) {
-      const cfg = STEP_CONFIGS[Math.max(0, Math.min(targetStep, 4))] || STEP_CONFIGS[0];
-      smoothSpread += (cfg.spread - smoothSpread) * 0.04;
-      smoothCount += (cfg.count - smoothCount) * 0.04;
+    // Sort by final value for consistent banding
+    mcPaths.sort((a, b) => a[MC_STEPS - 1] - b[MC_STEPS - 1]);
+
+    let mcVisibleCount = 0;
+    let mcSmooth = 0;
+
+    const MC_STEP_COUNTS = [6, 16, 30, 55, 80];
+
+    function drawMC(ctx, w, h, t) {
+      const target = MC_STEP_COUNTS[Math.min(mcVisibleCount, 4)] || 4;
+      mcSmooth += (target - mcSmooth) * 0.04;
+      const count = Math.round(mcSmooth);
+      if (count < 2) return;
 
       ctx.clearRect(0, 0, w, h);
       const centerY = h * 0.5;
-      const originX = w * 0.06;
-      const count = Math.round(smoothCount);
+      const scaleY = h * 0.003;
+      const originX = w * 0.08;
+      const endX = w * 0.92;
+      const spanX = endX - originX;
 
-      for (let i = 0; i < count; i++) {
-        const norm = count <= 1 ? 0 : (i / (count - 1)) * 2 - 1;
-        const endY = centerY + norm * h * smoothSpread;
-        const isAccent = i % 3 === 0;
-        const c = isAccent ? ACCENT : CHARCOAL;
-        const alpha = isAccent
-          ? 0.12 + (1 - Math.abs(norm)) * 0.08
-          : 0.05 + (1 - Math.abs(norm)) * 0.04;
+      // Watercolor confidence bands
+      const bandGroups = [
+        { from: 0, to: Math.min(count, Math.floor(count * 0.25)), c: ACCENT, a: 0.035 },
+        { from: Math.floor(count * 0.25), to: Math.min(count, Math.floor(count * 0.75)), c: OCHRE, a: 0.025 },
+        { from: Math.floor(count * 0.75), to: count, c: ACCENT, a: 0.035 },
+      ];
+
+      bandGroups.forEach(bg => {
+        if (bg.from >= bg.to) return;
+        ctx.beginPath();
+        for (let s = 0; s < MC_STEPS; s++) {
+          let max = -Infinity;
+          for (let p = bg.from; p < bg.to; p++) max = Math.max(max, mcPaths[p][s]);
+          const x = originX + (s / MC_STEPS) * spanX;
+          const y = centerY - max * scaleY;
+          s === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        for (let s = MC_STEPS - 1; s >= 0; s--) {
+          let min = Infinity;
+          for (let p = bg.from; p < bg.to; p++) min = Math.min(min, mcPaths[p][s]);
+          const x = originX + (s / MC_STEPS) * spanX;
+          const y = centerY - min * scaleY;
+          ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = rgba(bg.c, bg.a);
+        ctx.fill();
+      });
+
+      // Individual paths with chalk texture
+      ctx.shadowBlur = 1;
+      for (let p = 0; p < count; p++) {
+        const norm = count <= 1 ? 0.5 : p / (count - 1);
+        const c = p % 4 === 0 ? ACCENT : p % 4 === 2 ? OCHRE : CHARCOAL;
+        const a = c === CHARCOAL ? 0.06 : 0.10 + (1 - Math.abs(norm - 0.5) * 2) * 0.06;
 
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(${c.r},${c.g},${c.b},${alpha})`;
-        ctx.lineWidth = isAccent ? 1.4 : 0.8;
+        ctx.strokeStyle = rgba(c, a);
+        ctx.shadowColor = rgba(c, a * 0.3);
+        ctx.lineWidth = c === CHARCOAL ? 0.7 : 1.1;
 
-        for (let px = 0; px <= w; px += 2) {
-          const progress = px / w;
-          const targetY = centerY + (endY - centerY) * Math.pow(progress, 0.7);
-          const wave = Math.sin(progress * Math.PI * (2.5 + i * 0.25) + t * 0.3 + i * 0.6)
-                     * (8 + progress * 18 * smoothSpread);
-          const y = targetY + wave;
-          if (px === 0) ctx.moveTo(px, y); else ctx.lineTo(px, y);
+        for (let s = 0; s < MC_STEPS; s++) {
+          const x = originX + (s / MC_STEPS) * spanX;
+          const wobble = Math.sin(s * 0.12 + t * 2 + p * 0.7) * 0.4;
+          const y = centerY - mcPaths[p][s] * scaleY + wobble;
+          s === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
         }
         ctx.stroke();
       }
+      ctx.shadowBlur = 0;
 
-      // Origin mark
+      // Origin dot
       ctx.beginPath();
-      ctx.arc(originX, centerY, 2.5, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${CHARCOAL.r},${CHARCOAL.g},${CHARCOAL.b},0.25)`;
+      ctx.arc(originX, centerY, 3, 0, Math.PI * 2);
+      ctx.fillStyle = rgba(CHARCOAL, 0.3);
       ctx.fill();
+
+      // Subtle axis line
+      ctx.beginPath();
+      ctx.moveTo(originX, centerY);
+      ctx.lineTo(endX, centerY);
+      ctx.strokeStyle = rgba(CHARCOAL, 0.06);
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
     }
 
-    // ── Scroll handling ──
-    const beats = document.querySelectorAll('.beat');
-    let activeStep = -1;
-
-    function absTop(el) {
-      let top = 0;
-      while (el) { top += el.offsetTop; el = el.offsetParent; }
-      return top;
-    }
+    // ── Scroll: card accumulation + progress ──
+    const cards = document.querySelectorAll('.dossier-card');
 
     function onScroll() {
       const maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
       document.getElementById('progressFill').style.width =
         (window.scrollY / maxScroll) * 100 + '%';
 
-      const center = window.scrollY + window.innerHeight * 0.45;
-      let step = -1;
-      beats.forEach(b => {
-        const top = absTop(b);
-        if (center >= top && center < top + b.offsetHeight) {
-          step = parseInt(b.dataset.step);
+      let visCount = 0;
+      cards.forEach(card => {
+        if (card.classList.contains('visible')) { visCount++; return; }
+        const rect = card.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.78) {
+          card.classList.add('visible');
+          visCount++;
         }
       });
-
-      if (step !== activeStep) {
-        activeStep = step;
-        targetStep = step;
-        beats.forEach(b => {
-          b.classList.toggle('active', parseInt(b.dataset.step) === step);
-        });
-      }
+      mcVisibleCount = visCount;
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -592,17 +604,16 @@
       time += 0.005;
       const scroll = window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight);
       drawHero(hero.ctx, hero.w, hero.h, time, scroll);
-      drawTimeline(tl.ctx, tl.w, tl.h, time);
+      drawMC(mc.ctx, mc.w, mc.h, time);
       requestAnimationFrame(animate);
     }
     animate();
 
-    // ── Nav smooth scroll ──
+    // ── Nav ──
     document.querySelectorAll('nav a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
         e.preventDefault();
-        document.querySelector(a.getAttribute('href'))
-          ?.scrollIntoView({ behavior: 'smooth' });
+        document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
       });
     });
   </script>
