@@ -46,6 +46,14 @@
     hr.rule { border: none; border-top: 1px solid var(--rule); max-width: var(--max-w); margin: 0 auto; }
     hr.rule.full { max-width: none; }
 
+    .chalk-rule {
+      display: block; width: 100%; height: 4px; overflow: visible; margin: 0;
+    }
+    .chalk-rule line {
+      stroke: var(--rule); stroke-width: 0.8;
+      stroke-dasharray: 8 3 2 3;
+    }
+
     /* ── NAV ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -96,6 +104,11 @@
     .scroll-cue {
       position: absolute; bottom: 32px; right: var(--gutter);
       font-family: var(--mono); font-size: 10px; color: var(--text-3); letter-spacing: 0.1em;
+      animation: cue-pulse 2.8s ease-in-out infinite;
+    }
+    @keyframes cue-pulse {
+      0%, 100% { opacity: 0.4; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(3px); }
     }
 
     /* ── SECTION GRID ── */
@@ -108,6 +121,10 @@
     .sg-content p { color: var(--text-2); margin-bottom: 16px; }
     .sg-content p:last-child { margin-bottom: 0; }
     .columns-2 { column-count: 2; column-gap: 48px; column-rule: 1px solid var(--border); }
+    .drop-cap::first-letter {
+      font-family: var(--serif); font-size: 3.4em; float: left;
+      line-height: 0.8; margin: 4px 10px 0 0; color: var(--text);
+    }
 
     /* ── DOSSIER (accumulating cards + Monte Carlo) ── */
     .dossier {
@@ -179,7 +196,7 @@
       font-family: var(--mono); font-size: 13px; color: var(--text-2);
       padding: 10px 20px; border: 1px solid var(--border);
       margin-right: -1px; margin-bottom: -1px;
-      transition: background 0.08s, color 0.08s; cursor: default;
+      transition: background 0.15s, color 0.15s, transform 0.15s; cursor: default;
     }
     .keyword-grid span:hover {
       background: var(--accent); color: var(--bg);
@@ -246,20 +263,20 @@
     <div class="scroll-cue">SCROLL</div>
   </section>
 
-  <hr class="rule full">
+  <svg class="chalk-rule" viewBox="0 0 1000 4" preserveAspectRatio="none"><line x1="0" y1="2" x2="1000" y2="2"/></svg>
 
   <!-- ═══ ABSTRACT ═══ -->
   <section class="sg" id="abstract">
     <div class="sg-label"><span class="label">Abstract</span></div>
     <div class="sg-content">
       <div class="columns-2">
-        <p>[Write your background here. This section reads like a research abstract — state who you are, what you study, and the core questions that drive your work. Keep the tone direct and specific. Avoid generalities.]</p>
+        <p class="drop-cap">[Write your background here. This section reads like a research abstract — state who you are, what you study, and the core questions that drive your work. Keep the tone direct and specific. Avoid generalities.]</p>
         <p>[Continue with your broader intellectual trajectory. What connects your interest in mathematics to economics? What problems do you find most compelling? Where does computation enter the picture? Ground every claim in something concrete.]</p>
       </div>
     </div>
   </section>
 
-  <hr class="rule full">
+  <svg class="chalk-rule" viewBox="0 0 1000 4" preserveAspectRatio="none"><line x1="0" y1="2" x2="1000" y2="2"/></svg>
 
   <!-- ═══ DOSSIER — accumulating cards + Monte Carlo ═══ -->
   <section class="dossier" id="curriculum">
@@ -316,7 +333,7 @@
     </div>
   </section>
 
-  <hr class="rule full">
+  <svg class="chalk-rule" viewBox="0 0 1000 4" preserveAspectRatio="none"><line x1="0" y1="2" x2="1000" y2="2"/></svg>
 
   <!-- ═══ SELECTED WORK ═══ -->
   <section class="sg" id="work">
@@ -578,10 +595,17 @@
     // ── Scroll: card accumulation + progress ──
     const cards = document.querySelectorAll('.dossier-card');
 
+    const heroSection = document.querySelector('.hero');
+    const heroContent = document.querySelector('.hero-content');
+
     function onScroll() {
       const maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
-      document.getElementById('progressFill').style.width =
-        (window.scrollY / maxScroll) * 100 + '%';
+      const scrollPct = window.scrollY / maxScroll;
+      document.getElementById('progressFill').style.width = scrollPct * 100 + '%';
+
+      // Hero fade on scroll
+      const heroFade = Math.max(0, 1 - (window.scrollY / (window.innerHeight * 0.6)));
+      heroContent.style.opacity = heroFade;
 
       let visCount = 0;
       cards.forEach(card => {
